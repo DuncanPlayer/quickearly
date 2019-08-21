@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopAdMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopAd">
+        <id column="id" property="id" jdbcType="SMALLINT"/>
+        <result column="ad_position_id" property="adPositionId" jdbcType="SMALLINT"/>
+        <result column="media_type" property="mediaType" jdbcType="TINYINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="link" property="link" jdbcType="VARCHAR"/>
+        <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="end_time" property="endTime" jdbcType="INTEGER"/>
+        <result column="enabled" property="enabled" jdbcType="TINYINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, ad_position_id, media_type, name, link, image_url, content, end_time, enabled
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopAdExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_ad
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_ad
+        where id = #{id,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+        delete from nideshop_ad
+        where id = #{id,jdbcType=SMALLINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopAdExample">
+        delete from nideshop_ad
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopAd">
+        insert into nideshop_ad (id, ad_position_id, media_type,
+        name, link, image_url,
+        content, end_time, enabled
+        )
+        values (#{id,jdbcType=SMALLINT}, #{adPositionId,jdbcType=SMALLINT}, #{mediaType,jdbcType=TINYINT},
+        #{name,jdbcType=VARCHAR}, #{link,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
+        #{content,jdbcType=VARCHAR}, #{endTime,jdbcType=INTEGER}, #{enabled,jdbcType=TINYINT}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopAd">
+        insert into nideshop_ad
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="adPositionId != null">
+                ad_position_id,
+            </if>
+            <if test="mediaType != null">
+                media_type,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="link != null">
+                link,
+            </if>
+            <if test="imageUrl != null">
+                image_url,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="enabled != null">
+                enabled,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=SMALLINT},
+            </if>
+            <if test="adPositionId != null">
+                #{adPositionId,jdbcType=SMALLINT},
+            </if>
+            <if test="mediaType != null">
+                #{mediaType,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">
+                #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                #{enabled,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopAdExample" resultType="java.lang.Integer">
+        select count(*) from nideshop_ad
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_ad
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=SMALLINT},
+            </if>
+            <if test="record.adPositionId != null">
+                ad_position_id = #{record.adPositionId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.mediaType != null">
+                media_type = #{record.mediaType,jdbcType=TINYINT},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.link != null">
+                link = #{record.link,jdbcType=VARCHAR},
+            </if>
+            <if test="record.imageUrl != null">
+                image_url = #{record.imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.content != null">
+                content = #{record.content,jdbcType=VARCHAR},
+            </if>
+            <if test="record.endTime != null">
+                end_time = #{record.endTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.enabled != null">
+                enabled = #{record.enabled,jdbcType=TINYINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_ad
+        set id = #{record.id,jdbcType=SMALLINT},
+        ad_position_id = #{record.adPositionId,jdbcType=SMALLINT},
+        media_type = #{record.mediaType,jdbcType=TINYINT},
+        name = #{record.name,jdbcType=VARCHAR},
+        link = #{record.link,jdbcType=VARCHAR},
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
+        content = #{record.content,jdbcType=VARCHAR},
+        end_time = #{record.endTime,jdbcType=INTEGER},
+        enabled = #{record.enabled,jdbcType=TINYINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopAd">
+        update nideshop_ad
+        <set>
+            <if test="adPositionId != null">
+                ad_position_id = #{adPositionId,jdbcType=SMALLINT},
+            </if>
+            <if test="mediaType != null">
+                media_type = #{mediaType,jdbcType=TINYINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="link != null">
+                link = #{link,jdbcType=VARCHAR},
+            </if>
+            <if test="imageUrl != null">
+                image_url = #{imageUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=INTEGER},
+            </if>
+            <if test="enabled != null">
+                enabled = #{enabled,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopAd">
+        update nideshop_ad
+        set ad_position_id = #{adPositionId,jdbcType=SMALLINT},
+        media_type = #{mediaType,jdbcType=TINYINT},
+        name = #{name,jdbcType=VARCHAR},
+        link = #{link,jdbcType=VARCHAR},
+        image_url = #{imageUrl,jdbcType=VARCHAR},
+        content = #{content,jdbcType=VARCHAR},
+        end_time = #{endTime,jdbcType=INTEGER},
+        enabled = #{enabled,jdbcType=TINYINT}
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+</mapper>

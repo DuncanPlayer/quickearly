@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopAddressMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopAddress">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="country_id" property="countryId" jdbcType="SMALLINT"/>
+        <result column="province_id" property="provinceId" jdbcType="SMALLINT"/>
+        <result column="city_id" property="cityId" jdbcType="SMALLINT"/>
+        <result column="district_id" property="districtId" jdbcType="SMALLINT"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="is_default" property="isDefault" jdbcType="BIT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, name, user_id, country_id, province_id, city_id, district_id, address, mobile,
+        is_default
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopAddressExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_address
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_address
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_address
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopAddressExample">
+        delete from nideshop_address
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopAddress">
+        insert into nideshop_address (id, name, user_id,
+        country_id, province_id, city_id,
+        district_id, address, mobile,
+        is_default)
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
+        #{countryId,jdbcType=SMALLINT}, #{provinceId,jdbcType=SMALLINT}, #{cityId,jdbcType=SMALLINT},
+        #{districtId,jdbcType=SMALLINT}, #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+        #{isDefault,jdbcType=BIT})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopAddress">
+        insert into nideshop_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="countryId != null">
+                country_id,
+            </if>
+            <if test="provinceId != null">
+                province_id,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="districtId != null">
+                district_id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="isDefault != null">
+                is_default,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="countryId != null">
+                #{countryId,jdbcType=SMALLINT},
+            </if>
+            <if test="provinceId != null">
+                #{provinceId,jdbcType=SMALLINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=SMALLINT},
+            </if>
+            <if test="districtId != null">
+                #{districtId,jdbcType=SMALLINT},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="isDefault != null">
+                #{isDefault,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopAddressExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_address
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_address
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.countryId != null">
+                country_id = #{record.countryId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.provinceId != null">
+                province_id = #{record.provinceId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.cityId != null">
+                city_id = #{record.cityId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.districtId != null">
+                district_id = #{record.districtId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isDefault != null">
+                is_default = #{record.isDefault,jdbcType=BIT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_address
+        set id = #{record.id,jdbcType=INTEGER},
+        name = #{record.name,jdbcType=VARCHAR},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        country_id = #{record.countryId,jdbcType=SMALLINT},
+        province_id = #{record.provinceId,jdbcType=SMALLINT},
+        city_id = #{record.cityId,jdbcType=SMALLINT},
+        district_id = #{record.districtId,jdbcType=SMALLINT},
+        address = #{record.address,jdbcType=VARCHAR},
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+        is_default = #{record.isDefault,jdbcType=BIT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopAddress">
+        update nideshop_address
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="countryId != null">
+                country_id = #{countryId,jdbcType=SMALLINT},
+            </if>
+            <if test="provinceId != null">
+                province_id = #{provinceId,jdbcType=SMALLINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{cityId,jdbcType=SMALLINT},
+            </if>
+            <if test="districtId != null">
+                district_id = #{districtId,jdbcType=SMALLINT},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="isDefault != null">
+                is_default = #{isDefault,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopAddress">
+        update nideshop_address
+        set name = #{name,jdbcType=VARCHAR},
+        user_id = #{userId,jdbcType=INTEGER},
+        country_id = #{countryId,jdbcType=SMALLINT},
+        province_id = #{provinceId,jdbcType=SMALLINT},
+        city_id = #{cityId,jdbcType=SMALLINT},
+        district_id = #{districtId,jdbcType=SMALLINT},
+        address = #{address,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        is_default = #{isDefault,jdbcType=BIT}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopGoodsAttributeMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopGoodsAttribute">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="goods_id" property="goodsId" jdbcType="INTEGER"/>
+        <result column="attribute_id" property="attributeId" jdbcType="INTEGER"/>
+        <result column="gkeys" property="gkeys" jdbcType="VARCHAR"/>
+        <result column="val" property="val" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findAttributeListByGoodsSn" parameterType="String" resultMap="BaseResultMap">
+        select * from nideshop_goods_attribute where goods_id=#{goodsSN}
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, goods_id, attribute_id, gkeys, val
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="net.messi.early.pojo.NideshopGoodsAttributeExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_goods_attribute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_goods_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_goods_attribute
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopGoodsAttributeExample">
+        delete from nideshop_goods_attribute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopGoodsAttribute">
+        insert into nideshop_goods_attribute (id, goods_id, attribute_id,
+        gkeys, val)
+        values (#{id,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, #{attributeId,jdbcType=INTEGER},
+        #{gkeys,jdbcType=VARCHAR}, #{val,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopGoodsAttribute">
+        insert into nideshop_goods_attribute
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="goodsId != null">
+                goods_id,
+            </if>
+            <if test="attributeId != null">
+                attribute_id,
+            </if>
+            <if test="gkeys != null">
+                gkeys,
+            </if>
+            <if test="val != null">
+                val,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="goodsId != null">
+                #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="attributeId != null">
+                #{attributeId,jdbcType=INTEGER},
+            </if>
+            <if test="gkeys != null">
+                #{gkeys,jdbcType=VARCHAR},
+            </if>
+            <if test="val != null">
+                #{val,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopGoodsAttributeExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_goods_attribute
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_goods_attribute
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.goodsId != null">
+                goods_id = #{record.goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="record.attributeId != null">
+                attribute_id = #{record.attributeId,jdbcType=INTEGER},
+            </if>
+            <if test="record.gkeys != null">
+                gkeys = #{record.gkeys,jdbcType=VARCHAR},
+            </if>
+            <if test="record.val != null">
+                val = #{record.val,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_goods_attribute
+        set id = #{record.id,jdbcType=INTEGER},
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+        attribute_id = #{record.attributeId,jdbcType=INTEGER},
+        gkeys = #{record.gkeys,jdbcType=VARCHAR},
+        val = #{record.val,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopGoodsAttribute">
+        update nideshop_goods_attribute
+        <set>
+            <if test="goodsId != null">
+                goods_id = #{goodsId,jdbcType=INTEGER},
+            </if>
+            <if test="attributeId != null">
+                attribute_id = #{attributeId,jdbcType=INTEGER},
+            </if>
+            <if test="gkeys != null">
+                gkeys = #{gkeys,jdbcType=VARCHAR},
+            </if>
+            <if test="val != null">
+                val = #{val,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopGoodsAttribute">
+        update nideshop_goods_attribute
+        set goods_id = #{goodsId,jdbcType=INTEGER},
+        attribute_id = #{attributeId,jdbcType=INTEGER},
+        gkeys = #{gkeys,jdbcType=VARCHAR},
+        val = #{val,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopUserMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopUser">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="BIT"/>
+        <result column="birthday" property="birthday" jdbcType="INTEGER"/>
+        <result column="register_time" property="registerTime" jdbcType="INTEGER"/>
+        <result column="last_login_time" property="lastLoginTime" jdbcType="INTEGER"/>
+        <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR"/>
+        <result column="user_level_id" property="userLevelId" jdbcType="TINYINT"/>
+        <result column="nickname" property="nickname" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="weixin_openid" property="weixinOpenid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, username, password, gender, birthday, register_time, last_login_time, last_login_ip,
+        user_level_id, nickname, mobile, register_ip, avatar, weixin_openid
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopUserExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopUserExample">
+        delete from nideshop_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopUser">
+        insert into nideshop_user (id, username, password,
+        gender, birthday, register_time,
+        last_login_time, last_login_ip, user_level_id,
+        nickname, mobile, register_ip,
+        avatar, weixin_openid)
+        values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{gender,jdbcType=BIT}, #{birthday,jdbcType=INTEGER}, #{registerTime,jdbcType=INTEGER},
+        #{lastLoginTime,jdbcType=INTEGER}, #{lastLoginIp,jdbcType=VARCHAR}, #{userLevelId,jdbcType=TINYINT},
+        #{nickname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{registerIp,jdbcType=VARCHAR},
+        #{avatar,jdbcType=VARCHAR}, #{weixinOpenid,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopUser">
+        insert into nideshop_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="registerTime != null">
+                register_time,
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time,
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip,
+            </if>
+            <if test="userLevelId != null">
+                user_level_id,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="registerIp != null">
+                register_ip,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="weixinOpenid != null">
+                weixin_openid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                #{gender,jdbcType=BIT},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null">
+                #{registerTime,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginIp != null">
+                #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="userLevelId != null">
+                #{userLevelId,jdbcType=TINYINT},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="registerIp != null">
+                #{registerIp,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="weixinOpenid != null">
+                #{weixinOpenid,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopUserExample" resultType="java.lang.Integer">
+        select count(*) from nideshop_user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_user
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.username != null">
+                username = #{record.username,jdbcType=VARCHAR},
+            </if>
+            <if test="record.password != null">
+                password = #{record.password,jdbcType=VARCHAR},
+            </if>
+            <if test="record.gender != null">
+                gender = #{record.gender,jdbcType=BIT},
+            </if>
+            <if test="record.birthday != null">
+                birthday = #{record.birthday,jdbcType=INTEGER},
+            </if>
+            <if test="record.registerTime != null">
+                register_time = #{record.registerTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastLoginTime != null">
+                last_login_time = #{record.lastLoginTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.lastLoginIp != null">
+                last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userLevelId != null">
+                user_level_id = #{record.userLevelId,jdbcType=TINYINT},
+            </if>
+            <if test="record.nickname != null">
+                nickname = #{record.nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.registerIp != null">
+                register_ip = #{record.registerIp,jdbcType=VARCHAR},
+            </if>
+            <if test="record.avatar != null">
+                avatar = #{record.avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="record.weixinOpenid != null">
+                weixin_openid = #{record.weixinOpenid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_user
+        set id = #{record.id,jdbcType=INTEGER},
+        username = #{record.username,jdbcType=VARCHAR},
+        password = #{record.password,jdbcType=VARCHAR},
+        gender = #{record.gender,jdbcType=BIT},
+        birthday = #{record.birthday,jdbcType=INTEGER},
+        register_time = #{record.registerTime,jdbcType=INTEGER},
+        last_login_time = #{record.lastLoginTime,jdbcType=INTEGER},
+        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+        user_level_id = #{record.userLevelId,jdbcType=TINYINT},
+        nickname = #{record.nickname,jdbcType=VARCHAR},
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+        register_ip = #{record.registerIp,jdbcType=VARCHAR},
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+        weixin_openid = #{record.weixinOpenid,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopUser">
+        update nideshop_user
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=BIT},
+            </if>
+            <if test="birthday != null">
+                birthday = #{birthday,jdbcType=INTEGER},
+            </if>
+            <if test="registerTime != null">
+                register_time = #{registerTime,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime,jdbcType=INTEGER},
+            </if>
+            <if test="lastLoginIp != null">
+                last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+            </if>
+            <if test="userLevelId != null">
+                user_level_id = #{userLevelId,jdbcType=TINYINT},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="registerIp != null">
+                register_ip = #{registerIp,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="weixinOpenid != null">
+                weixin_openid = #{weixinOpenid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopUser">
+        update nideshop_user
+        set username = #{username,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        gender = #{gender,jdbcType=BIT},
+        birthday = #{birthday,jdbcType=INTEGER},
+        register_time = #{registerTime,jdbcType=INTEGER},
+        last_login_time = #{lastLoginTime,jdbcType=INTEGER},
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+        user_level_id = #{userLevelId,jdbcType=TINYINT},
+        nickname = #{nickname,jdbcType=VARCHAR},
+        mobile = #{mobile,jdbcType=VARCHAR},
+        register_ip = #{registerIp,jdbcType=VARCHAR},
+        avatar = #{avatar,jdbcType=VARCHAR},
+        weixin_openid = #{weixinOpenid,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopCommentMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopComment">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type_id" property="typeId" jdbcType="TINYINT"/>
+        <result column="value_id" property="valueId" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="VARCHAR"/>
+        <result column="add_time" property="addTime" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="TINYINT"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="new_content" property="newContent" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select * from nideshop_comment where value_id=#{valueId} limit #{page},#{size}
+    </select>
+
+    <select id="findElse" resultMap="BaseResultMap">
+        select * from nideshop_comment where value_id=#{valueId} and type_id=#{typeId} and new_content=#{showType} limit
+        #{page},#{size}
+    </select>
+
+    <select id="findElseTwo" resultMap="BaseResultMap">
+        select * from nideshop_comment where value_id=#{valueId} and new_content=#{showType}
+    </select>
+
+    <select id="findLastComment" resultType="net.messi.early.pojo.NideshopComment">
+        SELECT * FROM nideshop_comment ORDER BY id DESC LIMIT 1
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, type_id, value_id, content, parent_id, add_time, status, user_id, new_content
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopCommentExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_comment
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_comment
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_comment
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopCommentExample">
+        delete from nideshop_comment
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopComment">
+        insert into nideshop_comment (id, type_id, value_id,
+        content, parent_id, add_time,
+        status, user_id, new_content
+        )
+        values (#{id,jdbcType=INTEGER}, #{typeId,jdbcType=TINYINT}, #{valueId,jdbcType=INTEGER},
+        #{content,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{addTime,jdbcType=BIGINT},
+        #{status,jdbcType=TINYINT}, #{userId,jdbcType=INTEGER}, #{newContent,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopComment">
+        insert into nideshop_comment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="typeId != null">
+                type_id,
+            </if>
+            <if test="valueId != null">
+                value_id,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="newContent != null">
+                new_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="typeId != null">
+                #{typeId,jdbcType=TINYINT},
+            </if>
+            <if test="valueId != null">
+                #{valueId,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="newContent != null">
+                #{newContent,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopCommentExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_comment
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_comment
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.typeId != null">
+                type_id = #{record.typeId,jdbcType=TINYINT},
+            </if>
+            <if test="record.valueId != null">
+                value_id = #{record.valueId,jdbcType=INTEGER},
+            </if>
+            <if test="record.content != null">
+                content = #{record.content,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.addTime != null">
+                add_time = #{record.addTime,jdbcType=BIGINT},
+            </if>
+            <if test="record.status != null">
+                status = #{record.status,jdbcType=TINYINT},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.newContent != null">
+                new_content = #{record.newContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_comment
+        set id = #{record.id,jdbcType=INTEGER},
+        type_id = #{record.typeId,jdbcType=TINYINT},
+        value_id = #{record.valueId,jdbcType=INTEGER},
+        content = #{record.content,jdbcType=VARCHAR},
+        parent_id = #{record.parentId,jdbcType=VARCHAR},
+        add_time = #{record.addTime,jdbcType=BIGINT},
+        status = #{record.status,jdbcType=TINYINT},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        new_content = #{record.newContent,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopComment">
+        update nideshop_comment
+        <set>
+            <if test="typeId != null">
+                type_id = #{typeId,jdbcType=TINYINT},
+            </if>
+            <if test="valueId != null">
+                value_id = #{valueId,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=VARCHAR},
+            </if>
+            <if test="addTime != null">
+                add_time = #{addTime,jdbcType=BIGINT},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="newContent != null">
+                new_content = #{newContent,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopComment">
+        update nideshop_comment
+        set type_id = #{typeId,jdbcType=TINYINT},
+        value_id = #{valueId,jdbcType=INTEGER},
+        content = #{content,jdbcType=VARCHAR},
+        parent_id = #{parentId,jdbcType=VARCHAR},
+        add_time = #{addTime,jdbcType=BIGINT},
+        status = #{status,jdbcType=TINYINT},
+        user_id = #{userId,jdbcType=INTEGER},
+        new_content = #{newContent,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

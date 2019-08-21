@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopRegionMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopRegion">
+        <id column="id" property="id" jdbcType="SMALLINT"/>
+        <result column="parent_id" property="parentId" jdbcType="SMALLINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="BIT"/>
+        <result column="agency_id" property="agencyId" jdbcType="SMALLINT"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, parent_id, name, type, agency_id
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopRegionExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_region
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_region
+        where id = #{id,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+        delete from nideshop_region
+        where id = #{id,jdbcType=SMALLINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopRegionExample">
+        delete from nideshop_region
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopRegion">
+        insert into nideshop_region (id, parent_id, name,
+        type, agency_id)
+        values (#{id,jdbcType=SMALLINT}, #{parentId,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR},
+        #{type,jdbcType=BIT}, #{agencyId,jdbcType=SMALLINT})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopRegion">
+        insert into nideshop_region
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="agencyId != null">
+                agency_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=SMALLINT},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=SMALLINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=BIT},
+            </if>
+            <if test="agencyId != null">
+                #{agencyId,jdbcType=SMALLINT},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopRegionExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_region
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_region
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=SMALLINT},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=SMALLINT},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=BIT},
+            </if>
+            <if test="record.agencyId != null">
+                agency_id = #{record.agencyId,jdbcType=SMALLINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_region
+        set id = #{record.id,jdbcType=SMALLINT},
+        parent_id = #{record.parentId,jdbcType=SMALLINT},
+        name = #{record.name,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=BIT},
+        agency_id = #{record.agencyId,jdbcType=SMALLINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopRegion">
+        update nideshop_region
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=SMALLINT},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=BIT},
+            </if>
+            <if test="agencyId != null">
+                agency_id = #{agencyId,jdbcType=SMALLINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopRegion">
+        update nideshop_region
+        set parent_id = #{parentId,jdbcType=SMALLINT},
+        name = #{name,jdbcType=VARCHAR},
+        type = #{type,jdbcType=BIT},
+        agency_id = #{agencyId,jdbcType=SMALLINT}
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+</mapper>

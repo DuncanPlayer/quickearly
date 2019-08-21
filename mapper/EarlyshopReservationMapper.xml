@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.EarlyshopReservationMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.EarlyshopReservation">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="reservation_status" property="reservationStatus" jdbcType="BIT"/>
+        <result column="pay_status" property="payStatus" jdbcType="BIT"/>
+        <result column="province" property="province" jdbcType="SMALLINT"/>
+        <result column="city" property="city" jdbcType="SMALLINT"/>
+        <result column="district" property="district" jdbcType="SMALLINT"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="demand" property="demand" jdbcType="VARCHAR"/>
+        <result column="pay_name" property="payName" jdbcType="VARCHAR"/>
+        <result column="pay_id" property="payId" jdbcType="TINYINT"/>
+        <result column="actual_price" property="actualPrice" jdbcType="DECIMAL"/>
+        <result column="goods_price" property="goodsPrice" jdbcType="DECIMAL"/>
+        <result column="add_time" property="addTime" jdbcType="VARCHAR"/>
+        <result column="need_time" property="needTime" jdbcType="VARCHAR"/>
+        <result column="pay_time" property="payTime" jdbcType="VARCHAR"/>
+        <result column="freight_price" property="freightPrice" jdbcType="DECIMAL"/>
+        <result column="coupon_id" property="couponId" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="coupon_price" property="couponPrice" jdbcType="DECIMAL"/>
+        <result column="callback_status" property="callbackStatus" jdbcType="CHAR"/>
+    </resultMap>
+
+    <select id="findLastRecord" resultType="net.messi.early.pojo.EarlyshopReservation">
+        select * from earlyshop_reservation order by id DESC limit 1
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, user_id, reservation_status, pay_status, province, city, district, address, mobile,
+        demand, pay_name, pay_id, actual_price, goods_price, add_time, need_time, pay_time,
+        freight_price, coupon_id, parent_id, coupon_price, callback_status
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="net.messi.early.pojo.EarlyshopReservationExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from earlyshop_reservation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.EarlyshopReservationExample">
+        delete from earlyshop_reservation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.EarlyshopReservation">
+        insert into earlyshop_reservation (id, user_id, reservation_status,
+        pay_status, province, city,
+        district, address, mobile,
+        demand, pay_name, pay_id,
+        actual_price, goods_price, add_time,
+        need_time, pay_time, freight_price,
+        coupon_id, parent_id, coupon_price,
+        callback_status)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{reservationStatus,jdbcType=BIT},
+        #{payStatus,jdbcType=BIT}, #{province,jdbcType=SMALLINT}, #{city,jdbcType=SMALLINT},
+        #{district,jdbcType=SMALLINT}, #{address,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR},
+        #{demand,jdbcType=VARCHAR}, #{payName,jdbcType=VARCHAR}, #{payId,jdbcType=TINYINT},
+        #{actualPrice,jdbcType=DECIMAL}, #{goodsPrice,jdbcType=DECIMAL}, #{addTime,jdbcType=VARCHAR},
+        #{needTime,jdbcType=VARCHAR}, #{payTime,jdbcType=VARCHAR}, #{freightPrice,jdbcType=DECIMAL},
+        #{couponId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{couponPrice,jdbcType=DECIMAL},
+        #{callbackStatus,jdbcType=CHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.EarlyshopReservation">
+        insert into earlyshop_reservation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="reservationStatus != null">
+                reservation_status,
+            </if>
+            <if test="payStatus != null">
+                pay_status,
+            </if>
+            <if test="province != null">
+                province,
+            </if>
+            <if test="city != null">
+                city,
+            </if>
+            <if test="district != null">
+                district,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="mobile != null">
+                mobile,
+            </if>
+            <if test="demand != null">
+                demand,
+            </if>
+            <if test="payName != null">
+                pay_name,
+            </if>
+            <if test="payId != null">
+                pay_id,
+            </if>
+            <if test="actualPrice != null">
+                actual_price,
+            </if>
+            <if test="goodsPrice != null">
+                goods_price,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="needTime != null">
+                need_time,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="freightPrice != null">
+                freight_price,
+            </if>
+            <if test="couponId != null">
+                coupon_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="couponPrice != null">
+                coupon_price,
+            </if>
+            <if test="callbackStatus != null">
+                callback_status,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="reservationStatus != null">
+                #{reservationStatus,jdbcType=BIT},
+            </if>
+            <if test="payStatus != null">
+                #{payStatus,jdbcType=BIT},
+            </if>
+            <if test="province != null">
+                #{province,jdbcType=SMALLINT},
+            </if>
+            <if test="city != null">
+                #{city,jdbcType=SMALLINT},
+            </if>
+            <if test="district != null">
+                #{district,jdbcType=SMALLINT},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="demand != null">
+                #{demand,jdbcType=VARCHAR},
+            </if>
+            <if test="payName != null">
+                #{payName,jdbcType=VARCHAR},
+            </if>
+            <if test="payId != null">
+                #{payId,jdbcType=TINYINT},
+            </if>
+            <if test="actualPrice != null">
+                #{actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="goodsPrice != null">
+                #{goodsPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="addTime != null">
+                #{addTime,jdbcType=VARCHAR},
+            </if>
+            <if test="needTime != null">
+                #{needTime,jdbcType=VARCHAR},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="freightPrice != null">
+                #{freightPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="couponId != null">
+                #{couponId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="couponPrice != null">
+                #{couponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="callbackStatus != null">
+                #{callbackStatus,jdbcType=CHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.EarlyshopReservationExample"
+            resultType="java.lang.Integer">
+        select count(*) from earlyshop_reservation
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update earlyshop_reservation
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.reservationStatus != null">
+                reservation_status = #{record.reservationStatus,jdbcType=BIT},
+            </if>
+            <if test="record.payStatus != null">
+                pay_status = #{record.payStatus,jdbcType=BIT},
+            </if>
+            <if test="record.province != null">
+                province = #{record.province,jdbcType=SMALLINT},
+            </if>
+            <if test="record.city != null">
+                city = #{record.city,jdbcType=SMALLINT},
+            </if>
+            <if test="record.district != null">
+                district = #{record.district,jdbcType=SMALLINT},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.mobile != null">
+                mobile = #{record.mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="record.demand != null">
+                demand = #{record.demand,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payName != null">
+                pay_name = #{record.payName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payId != null">
+                pay_id = #{record.payId,jdbcType=TINYINT},
+            </if>
+            <if test="record.actualPrice != null">
+                actual_price = #{record.actualPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.goodsPrice != null">
+                goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.addTime != null">
+                add_time = #{record.addTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.needTime != null">
+                need_time = #{record.needTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.payTime != null">
+                pay_time = #{record.payTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.freightPrice != null">
+                freight_price = #{record.freightPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.couponId != null">
+                coupon_id = #{record.couponId,jdbcType=INTEGER},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.couponPrice != null">
+                coupon_price = #{record.couponPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="record.callbackStatus != null">
+                callback_status = #{record.callbackStatus,jdbcType=CHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update earlyshop_reservation
+        set id = #{record.id,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        reservation_status = #{record.reservationStatus,jdbcType=BIT},
+        pay_status = #{record.payStatus,jdbcType=BIT},
+        province = #{record.province,jdbcType=SMALLINT},
+        city = #{record.city,jdbcType=SMALLINT},
+        district = #{record.district,jdbcType=SMALLINT},
+        address = #{record.address,jdbcType=VARCHAR},
+        mobile = #{record.mobile,jdbcType=VARCHAR},
+        demand = #{record.demand,jdbcType=VARCHAR},
+        pay_name = #{record.payName,jdbcType=VARCHAR},
+        pay_id = #{record.payId,jdbcType=TINYINT},
+        actual_price = #{record.actualPrice,jdbcType=DECIMAL},
+        goods_price = #{record.goodsPrice,jdbcType=DECIMAL},
+        add_time = #{record.addTime,jdbcType=VARCHAR},
+        need_time = #{record.needTime,jdbcType=VARCHAR},
+        pay_time = #{record.payTime,jdbcType=VARCHAR},
+        freight_price = #{record.freightPrice,jdbcType=DECIMAL},
+        coupon_id = #{record.couponId,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+        coupon_price = #{record.couponPrice,jdbcType=DECIMAL},
+        callback_status = #{record.callbackStatus,jdbcType=CHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+</mapper>

@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopFeedbackMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopFeedback">
+        <id column="msg_id" property="msgId" jdbcType="INTEGER"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_email" property="userEmail" jdbcType="VARCHAR"/>
+        <result column="msg_title" property="msgTitle" jdbcType="VARCHAR"/>
+        <result column="msg_type" property="msgType" jdbcType="BIT"/>
+        <result column="msg_status" property="msgStatus" jdbcType="BIT"/>
+        <result column="msg_time" property="msgTime" jdbcType="INTEGER"/>
+        <result column="message_img" property="messageImg" jdbcType="VARCHAR"/>
+        <result column="order_id" property="orderId" jdbcType="INTEGER"/>
+        <result column="msg_area" property="msgArea" jdbcType="BIT"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="net.messi.early.pojo.NideshopFeedback" extends="BaseResultMap">
+        <result column="msg_content" property="msgContent" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        msg_id, parent_id, user_id, user_name, user_email, msg_title, msg_type, msg_status,
+        msg_time, message_img, order_id, msg_area
+    </sql>
+    <sql id="Blob_Column_List">
+        msg_content
+    </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="net.messi.early.pojo.NideshopFeedbackExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from nideshop_feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopFeedbackExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from nideshop_feedback
+        where msg_id = #{msgId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_feedback
+        where msg_id = #{msgId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopFeedbackExample">
+        delete from nideshop_feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopFeedback">
+        insert into nideshop_feedback (msg_id, parent_id, user_id,
+        user_name, user_email, msg_title,
+        msg_type, msg_status, msg_time,
+        message_img, order_id, msg_area,
+        msg_content)
+        values (#{msgId,jdbcType=INTEGER}, #{parentId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER},
+        #{userName,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{msgTitle,jdbcType=VARCHAR},
+        #{msgType,jdbcType=BIT}, #{msgStatus,jdbcType=BIT}, #{msgTime,jdbcType=INTEGER},
+        #{messageImg,jdbcType=VARCHAR}, #{orderId,jdbcType=INTEGER}, #{msgArea,jdbcType=BIT},
+        #{msgContent,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopFeedback">
+        insert into nideshop_feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="msgId != null">
+                msg_id,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="userEmail != null">
+                user_email,
+            </if>
+            <if test="msgTitle != null">
+                msg_title,
+            </if>
+            <if test="msgType != null">
+                msg_type,
+            </if>
+            <if test="msgStatus != null">
+                msg_status,
+            </if>
+            <if test="msgTime != null">
+                msg_time,
+            </if>
+            <if test="messageImg != null">
+                message_img,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="msgArea != null">
+                msg_area,
+            </if>
+            <if test="msgContent != null">
+                msg_content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="msgId != null">
+                #{msgId,jdbcType=INTEGER},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="msgTitle != null">
+                #{msgTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="msgType != null">
+                #{msgType,jdbcType=BIT},
+            </if>
+            <if test="msgStatus != null">
+                #{msgStatus,jdbcType=BIT},
+            </if>
+            <if test="msgTime != null">
+                #{msgTime,jdbcType=INTEGER},
+            </if>
+            <if test="messageImg != null">
+                #{messageImg,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="msgArea != null">
+                #{msgArea,jdbcType=BIT},
+            </if>
+            <if test="msgContent != null">
+                #{msgContent,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopFeedbackExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_feedback
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_feedback
+        <set>
+            <if test="record.msgId != null">
+                msg_id = #{record.msgId,jdbcType=INTEGER},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.userName != null">
+                user_name = #{record.userName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userEmail != null">
+                user_email = #{record.userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="record.msgTitle != null">
+                msg_title = #{record.msgTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.msgType != null">
+                msg_type = #{record.msgType,jdbcType=BIT},
+            </if>
+            <if test="record.msgStatus != null">
+                msg_status = #{record.msgStatus,jdbcType=BIT},
+            </if>
+            <if test="record.msgTime != null">
+                msg_time = #{record.msgTime,jdbcType=INTEGER},
+            </if>
+            <if test="record.messageImg != null">
+                message_img = #{record.messageImg,jdbcType=VARCHAR},
+            </if>
+            <if test="record.orderId != null">
+                order_id = #{record.orderId,jdbcType=INTEGER},
+            </if>
+            <if test="record.msgArea != null">
+                msg_area = #{record.msgArea,jdbcType=BIT},
+            </if>
+            <if test="record.msgContent != null">
+                msg_content = #{record.msgContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update nideshop_feedback
+        set msg_id = #{record.msgId,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        user_name = #{record.userName,jdbcType=VARCHAR},
+        user_email = #{record.userEmail,jdbcType=VARCHAR},
+        msg_title = #{record.msgTitle,jdbcType=VARCHAR},
+        msg_type = #{record.msgType,jdbcType=BIT},
+        msg_status = #{record.msgStatus,jdbcType=BIT},
+        msg_time = #{record.msgTime,jdbcType=INTEGER},
+        message_img = #{record.messageImg,jdbcType=VARCHAR},
+        order_id = #{record.orderId,jdbcType=INTEGER},
+        msg_area = #{record.msgArea,jdbcType=BIT},
+        msg_content = #{record.msgContent,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_feedback
+        set msg_id = #{record.msgId,jdbcType=INTEGER},
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        user_name = #{record.userName,jdbcType=VARCHAR},
+        user_email = #{record.userEmail,jdbcType=VARCHAR},
+        msg_title = #{record.msgTitle,jdbcType=VARCHAR},
+        msg_type = #{record.msgType,jdbcType=BIT},
+        msg_status = #{record.msgStatus,jdbcType=BIT},
+        msg_time = #{record.msgTime,jdbcType=INTEGER},
+        message_img = #{record.messageImg,jdbcType=VARCHAR},
+        order_id = #{record.orderId,jdbcType=INTEGER},
+        msg_area = #{record.msgArea,jdbcType=BIT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopFeedback">
+        update nideshop_feedback
+        <set>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="msgTitle != null">
+                msg_title = #{msgTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="msgType != null">
+                msg_type = #{msgType,jdbcType=BIT},
+            </if>
+            <if test="msgStatus != null">
+                msg_status = #{msgStatus,jdbcType=BIT},
+            </if>
+            <if test="msgTime != null">
+                msg_time = #{msgTime,jdbcType=INTEGER},
+            </if>
+            <if test="messageImg != null">
+                message_img = #{messageImg,jdbcType=VARCHAR},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="msgArea != null">
+                msg_area = #{msgArea,jdbcType=BIT},
+            </if>
+            <if test="msgContent != null">
+                msg_content = #{msgContent,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where msg_id = #{msgId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKeyWithBLOBs" parameterType="net.messi.early.pojo.NideshopFeedback">
+        update nideshop_feedback
+        set parent_id = #{parentId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_email = #{userEmail,jdbcType=VARCHAR},
+        msg_title = #{msgTitle,jdbcType=VARCHAR},
+        msg_type = #{msgType,jdbcType=BIT},
+        msg_status = #{msgStatus,jdbcType=BIT},
+        msg_time = #{msgTime,jdbcType=INTEGER},
+        message_img = #{messageImg,jdbcType=VARCHAR},
+        order_id = #{orderId,jdbcType=INTEGER},
+        msg_area = #{msgArea,jdbcType=BIT},
+        msg_content = #{msgContent,jdbcType=LONGVARCHAR}
+        where msg_id = #{msgId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopFeedback">
+        update nideshop_feedback
+        set parent_id = #{parentId,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=INTEGER},
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_email = #{userEmail,jdbcType=VARCHAR},
+        msg_title = #{msgTitle,jdbcType=VARCHAR},
+        msg_type = #{msgType,jdbcType=BIT},
+        msg_status = #{msgStatus,jdbcType=BIT},
+        msg_time = #{msgTime,jdbcType=INTEGER},
+        message_img = #{messageImg,jdbcType=VARCHAR},
+        order_id = #{orderId,jdbcType=INTEGER},
+        msg_area = #{msgArea,jdbcType=BIT}
+        where msg_id = #{msgId,jdbcType=INTEGER}
+    </update>
+</mapper>

@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.EarlyshopQrcodeMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.EarlyshopQrcode">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="order_id" property="orderId" jdbcType="INTEGER"/>
+        <result column="qrCode_src" property="qrcodeSrc" jdbcType="VARCHAR"/>
+        <result column="modify_time" property="modifyTime" jdbcType="VARCHAR"/>
+        <result column="qrContent" property="qrcontent" jdbcType="VARCHAR"/>
+        <result column="isUsed" property="isused" jdbcType="VARCHAR"/>
+        <result column="isDefault" property="isdefault" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, user_id, order_id, qrCode_src, modify_time, qrContent, isUsed, isDefault
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.EarlyshopQrcodeExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from earlyshop_qrcode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from earlyshop_qrcode
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from earlyshop_qrcode
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.EarlyshopQrcodeExample">
+        delete from earlyshop_qrcode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.EarlyshopQrcode">
+        insert into earlyshop_qrcode (id, user_id, order_id,
+        qrCode_src, modify_time, qrContent,
+        isUsed, isDefault)
+        values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER},
+        #{qrcodeSrc,jdbcType=VARCHAR}, #{modifyTime,jdbcType=VARCHAR}, #{qrcontent,jdbcType=VARCHAR},
+        #{isused,jdbcType=VARCHAR}, #{isdefault,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.EarlyshopQrcode">
+        insert into earlyshop_qrcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="orderId != null">
+                order_id,
+            </if>
+            <if test="qrcodeSrc != null">
+                qrCode_src,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="qrcontent != null">
+                qrContent,
+            </if>
+            <if test="isused != null">
+                isUsed,
+            </if>
+            <if test="isdefault != null">
+                isDefault,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="qrcodeSrc != null">
+                #{qrcodeSrc,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcontent != null">
+                #{qrcontent,jdbcType=VARCHAR},
+            </if>
+            <if test="isused != null">
+                #{isused,jdbcType=VARCHAR},
+            </if>
+            <if test="isdefault != null">
+                #{isdefault,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.EarlyshopQrcodeExample"
+            resultType="java.lang.Integer">
+        select count(*) from earlyshop_qrcode
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update earlyshop_qrcode
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=INTEGER},
+            </if>
+            <if test="record.orderId != null">
+                order_id = #{record.orderId,jdbcType=INTEGER},
+            </if>
+            <if test="record.qrcodeSrc != null">
+                qrCode_src = #{record.qrcodeSrc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.modifyTime != null">
+                modify_time = #{record.modifyTime,jdbcType=VARCHAR},
+            </if>
+            <if test="record.qrcontent != null">
+                qrContent = #{record.qrcontent,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isused != null">
+                isUsed = #{record.isused,jdbcType=VARCHAR},
+            </if>
+            <if test="record.isdefault != null">
+                isDefault = #{record.isdefault,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update earlyshop_qrcode
+        set id = #{record.id,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=INTEGER},
+        order_id = #{record.orderId,jdbcType=INTEGER},
+        qrCode_src = #{record.qrcodeSrc,jdbcType=VARCHAR},
+        modify_time = #{record.modifyTime,jdbcType=VARCHAR},
+        qrContent = #{record.qrcontent,jdbcType=VARCHAR},
+        isUsed = #{record.isused,jdbcType=VARCHAR},
+        isDefault = #{record.isdefault,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.EarlyshopQrcode">
+        update earlyshop_qrcode
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="orderId != null">
+                order_id = #{orderId,jdbcType=INTEGER},
+            </if>
+            <if test="qrcodeSrc != null">
+                qrCode_src = #{qrcodeSrc,jdbcType=VARCHAR},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime,jdbcType=VARCHAR},
+            </if>
+            <if test="qrcontent != null">
+                qrContent = #{qrcontent,jdbcType=VARCHAR},
+            </if>
+            <if test="isused != null">
+                isUsed = #{isused,jdbcType=VARCHAR},
+            </if>
+            <if test="isdefault != null">
+                isDefault = #{isdefault,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.EarlyshopQrcode">
+        update earlyshop_qrcode
+        set user_id = #{userId,jdbcType=INTEGER},
+        order_id = #{orderId,jdbcType=INTEGER},
+        qrCode_src = #{qrcodeSrc,jdbcType=VARCHAR},
+        modify_time = #{modifyTime,jdbcType=VARCHAR},
+        qrContent = #{qrcontent,jdbcType=VARCHAR},
+        isUsed = #{isused,jdbcType=VARCHAR},
+        isDefault = #{isdefault,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

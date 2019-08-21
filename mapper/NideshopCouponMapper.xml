@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopCouponMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopCoupon">
+        <id column="id" property="id" jdbcType="SMALLINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="type_money" property="typeMoney" jdbcType="DECIMAL"/>
+        <result column="send_type" property="sendType" jdbcType="TINYINT"/>
+        <result column="min_amount" property="minAmount" jdbcType="DECIMAL"/>
+        <result column="max_amount" property="maxAmount" jdbcType="DECIMAL"/>
+        <result column="send_start_date" property="sendStartDate" jdbcType="VARCHAR"/>
+        <result column="send_end_date" property="sendEndDate" jdbcType="VARCHAR"/>
+        <result column="use_start_date" property="useStartDate" jdbcType="VARCHAR"/>
+        <result column="use_end_date" property="useEndDate" jdbcType="VARCHAR"/>
+        <result column="min_goods_amount" property="minGoodsAmount" jdbcType="DECIMAL"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="titleName" property="titlename" jdbcType="VARCHAR"/>
+        <result column="needText" property="needtext" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, name, type_money, send_type, min_amount, max_amount, send_start_date, send_end_date,
+        use_start_date, use_end_date, min_goods_amount, title, titleName, needText
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopCouponExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_coupon
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_coupon
+        where id = #{id,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
+        delete from nideshop_coupon
+        where id = #{id,jdbcType=SMALLINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopCouponExample">
+        delete from nideshop_coupon
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopCoupon">
+        insert into nideshop_coupon (id, name, type_money,
+        send_type, min_amount, max_amount,
+        send_start_date, send_end_date, use_start_date,
+        use_end_date, min_goods_amount, title,
+        titleName, needText)
+        values (#{id,jdbcType=SMALLINT}, #{name,jdbcType=VARCHAR}, #{typeMoney,jdbcType=DECIMAL},
+        #{sendType,jdbcType=TINYINT}, #{minAmount,jdbcType=DECIMAL}, #{maxAmount,jdbcType=DECIMAL},
+        #{sendStartDate,jdbcType=VARCHAR}, #{sendEndDate,jdbcType=VARCHAR}, #{useStartDate,jdbcType=VARCHAR},
+        #{useEndDate,jdbcType=VARCHAR}, #{minGoodsAmount,jdbcType=DECIMAL}, #{title,jdbcType=VARCHAR},
+        #{titlename,jdbcType=VARCHAR}, #{needtext,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopCoupon">
+        insert into nideshop_coupon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="typeMoney != null">
+                type_money,
+            </if>
+            <if test="sendType != null">
+                send_type,
+            </if>
+            <if test="minAmount != null">
+                min_amount,
+            </if>
+            <if test="maxAmount != null">
+                max_amount,
+            </if>
+            <if test="sendStartDate != null">
+                send_start_date,
+            </if>
+            <if test="sendEndDate != null">
+                send_end_date,
+            </if>
+            <if test="useStartDate != null">
+                use_start_date,
+            </if>
+            <if test="useEndDate != null">
+                use_end_date,
+            </if>
+            <if test="minGoodsAmount != null">
+                min_goods_amount,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="titlename != null">
+                titleName,
+            </if>
+            <if test="needtext != null">
+                needText,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=SMALLINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="typeMoney != null">
+                #{typeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="sendType != null">
+                #{sendType,jdbcType=TINYINT},
+            </if>
+            <if test="minAmount != null">
+                #{minAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="maxAmount != null">
+                #{maxAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="sendStartDate != null">
+                #{sendStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sendEndDate != null">
+                #{sendEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="useStartDate != null">
+                #{useStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="useEndDate != null">
+                #{useEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="minGoodsAmount != null">
+                #{minGoodsAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="titlename != null">
+                #{titlename,jdbcType=VARCHAR},
+            </if>
+            <if test="needtext != null">
+                #{needtext,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopCouponExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_coupon
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_coupon
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=SMALLINT},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.typeMoney != null">
+                type_money = #{record.typeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="record.sendType != null">
+                send_type = #{record.sendType,jdbcType=TINYINT},
+            </if>
+            <if test="record.minAmount != null">
+                min_amount = #{record.minAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.maxAmount != null">
+                max_amount = #{record.maxAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.sendStartDate != null">
+                send_start_date = #{record.sendStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sendEndDate != null">
+                send_end_date = #{record.sendEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.useStartDate != null">
+                use_start_date = #{record.useStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.useEndDate != null">
+                use_end_date = #{record.useEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="record.minGoodsAmount != null">
+                min_goods_amount = #{record.minGoodsAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="record.title != null">
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.titlename != null">
+                titleName = #{record.titlename,jdbcType=VARCHAR},
+            </if>
+            <if test="record.needtext != null">
+                needText = #{record.needtext,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_coupon
+        set id = #{record.id,jdbcType=SMALLINT},
+        name = #{record.name,jdbcType=VARCHAR},
+        type_money = #{record.typeMoney,jdbcType=DECIMAL},
+        send_type = #{record.sendType,jdbcType=TINYINT},
+        min_amount = #{record.minAmount,jdbcType=DECIMAL},
+        max_amount = #{record.maxAmount,jdbcType=DECIMAL},
+        send_start_date = #{record.sendStartDate,jdbcType=VARCHAR},
+        send_end_date = #{record.sendEndDate,jdbcType=VARCHAR},
+        use_start_date = #{record.useStartDate,jdbcType=VARCHAR},
+        use_end_date = #{record.useEndDate,jdbcType=VARCHAR},
+        min_goods_amount = #{record.minGoodsAmount,jdbcType=DECIMAL},
+        title = #{record.title,jdbcType=VARCHAR},
+        titleName = #{record.titlename,jdbcType=VARCHAR},
+        needText = #{record.needtext,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopCoupon">
+        update nideshop_coupon
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="typeMoney != null">
+                type_money = #{typeMoney,jdbcType=DECIMAL},
+            </if>
+            <if test="sendType != null">
+                send_type = #{sendType,jdbcType=TINYINT},
+            </if>
+            <if test="minAmount != null">
+                min_amount = #{minAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="maxAmount != null">
+                max_amount = #{maxAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="sendStartDate != null">
+                send_start_date = #{sendStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="sendEndDate != null">
+                send_end_date = #{sendEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="useStartDate != null">
+                use_start_date = #{useStartDate,jdbcType=VARCHAR},
+            </if>
+            <if test="useEndDate != null">
+                use_end_date = #{useEndDate,jdbcType=VARCHAR},
+            </if>
+            <if test="minGoodsAmount != null">
+                min_goods_amount = #{minGoodsAmount,jdbcType=DECIMAL},
+            </if>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="titlename != null">
+                titleName = #{titlename,jdbcType=VARCHAR},
+            </if>
+            <if test="needtext != null">
+                needText = #{needtext,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopCoupon">
+        update nideshop_coupon
+        set name = #{name,jdbcType=VARCHAR},
+        type_money = #{typeMoney,jdbcType=DECIMAL},
+        send_type = #{sendType,jdbcType=TINYINT},
+        min_amount = #{minAmount,jdbcType=DECIMAL},
+        max_amount = #{maxAmount,jdbcType=DECIMAL},
+        send_start_date = #{sendStartDate,jdbcType=VARCHAR},
+        send_end_date = #{sendEndDate,jdbcType=VARCHAR},
+        use_start_date = #{useStartDate,jdbcType=VARCHAR},
+        use_end_date = #{useEndDate,jdbcType=VARCHAR},
+        min_goods_amount = #{minGoodsAmount,jdbcType=DECIMAL},
+        title = #{title,jdbcType=VARCHAR},
+        titleName = #{titlename,jdbcType=VARCHAR},
+        needText = #{needtext,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+</mapper>

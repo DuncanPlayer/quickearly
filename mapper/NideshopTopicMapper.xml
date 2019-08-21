@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopTopicMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopTopic">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="item_pic_url" property="itemPicUrl" jdbcType="VARCHAR"/>
+        <result column="subtitle" property="subtitle" jdbcType="VARCHAR"/>
+        <result column="topic_category_id" property="topicCategoryId" jdbcType="INTEGER"/>
+        <result column="price_info" property="priceInfo" jdbcType="VARCHAR"/>
+        <result column="read_count" property="readCount" jdbcType="VARCHAR"/>
+        <result column="scene_pic_url" property="scenePicUrl" jdbcType="VARCHAR"/>
+        <result column="topic_template_id" property="topicTemplateId" jdbcType="INTEGER"/>
+        <result column="topic_tag_id" property="topicTagId" jdbcType="INTEGER"/>
+        <result column="sort_order" property="sortOrder" jdbcType="INTEGER"/>
+        <result column="is_show" property="isShow" jdbcType="BIT"/>
+    </resultMap>
+    <resultMap id="ResultMapWithBLOBs" type="net.messi.early.pojo.NideshopTopic" extends="BaseResultMap">
+        <result column="content" property="content" jdbcType="LONGVARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, title, avatar, item_pic_url, subtitle, topic_category_id, price_info, read_count,
+        scene_pic_url, topic_template_id, topic_tag_id, sort_order, is_show
+    </sql>
+    <sql id="Blob_Column_List">
+        content
+    </sql>
+    <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs"
+            parameterType="net.messi.early.pojo.NideshopTopicExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        ,
+        <include refid="Blob_Column_List"/>
+        from nideshop_topic
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopTopicExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_topic
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopTopicExample">
+        delete from nideshop_topic
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopTopic">
+        insert into nideshop_topic (id, title, avatar,
+        item_pic_url, subtitle, topic_category_id,
+        price_info, read_count, scene_pic_url,
+        topic_template_id, topic_tag_id, sort_order,
+        is_show, content)
+        values (#{id,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR},
+        #{itemPicUrl,jdbcType=VARCHAR}, #{subtitle,jdbcType=VARCHAR}, #{topicCategoryId,jdbcType=INTEGER},
+        #{priceInfo,jdbcType=DECIMAL}, #{readCount,jdbcType=VARCHAR}, #{scenePicUrl,jdbcType=VARCHAR},
+        #{topicTemplateId,jdbcType=INTEGER}, #{topicTagId,jdbcType=INTEGER}, #{sortOrder,jdbcType=INTEGER},
+        #{isShow,jdbcType=BIT}, #{content,jdbcType=LONGVARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopTopic">
+        insert into nideshop_topic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="title != null">
+                title,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="itemPicUrl != null">
+                item_pic_url,
+            </if>
+            <if test="subtitle != null">
+                subtitle,
+            </if>
+            <if test="topicCategoryId != null">
+                topic_category_id,
+            </if>
+            <if test="priceInfo != null">
+                price_info,
+            </if>
+            <if test="readCount != null">
+                read_count,
+            </if>
+            <if test="scenePicUrl != null">
+                scene_pic_url,
+            </if>
+            <if test="topicTemplateId != null">
+                topic_template_id,
+            </if>
+            <if test="topicTagId != null">
+                topic_tag_id,
+            </if>
+            <if test="sortOrder != null">
+                sort_order,
+            </if>
+            <if test="isShow != null">
+                is_show,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="title != null">
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null">
+                #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="itemPicUrl != null">
+                #{itemPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="subtitle != null">
+                #{subtitle,jdbcType=VARCHAR},
+            </if>
+            <if test="topicCategoryId != null">
+                #{topicCategoryId,jdbcType=INTEGER},
+            </if>
+            <if test="priceInfo != null">
+                #{priceInfo,jdbcType=DECIMAL},
+            </if>
+            <if test="readCount != null">
+                #{readCount,jdbcType=VARCHAR},
+            </if>
+            <if test="scenePicUrl != null">
+                #{scenePicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="topicTemplateId != null">
+                #{topicTemplateId,jdbcType=INTEGER},
+            </if>
+            <if test="topicTagId != null">
+                #{topicTagId,jdbcType=INTEGER},
+            </if>
+            <if test="sortOrder != null">
+                #{sortOrder,jdbcType=INTEGER},
+            </if>
+            <if test="isShow != null">
+                #{isShow,jdbcType=BIT},
+            </if>
+            <if test="content != null">
+                #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopTopicExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_topic
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_topic
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.title != null">
+                title = #{record.title,jdbcType=VARCHAR},
+            </if>
+            <if test="record.avatar != null">
+                avatar = #{record.avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="record.itemPicUrl != null">
+                item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.subtitle != null">
+                subtitle = #{record.subtitle,jdbcType=VARCHAR},
+            </if>
+            <if test="record.topicCategoryId != null">
+                topic_category_id = #{record.topicCategoryId,jdbcType=INTEGER},
+            </if>
+            <if test="record.priceInfo != null">
+                price_info = #{record.priceInfo,jdbcType=DECIMAL},
+            </if>
+            <if test="record.readCount != null">
+                read_count = #{record.readCount,jdbcType=VARCHAR},
+            </if>
+            <if test="record.scenePicUrl != null">
+                scene_pic_url = #{record.scenePicUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.topicTemplateId != null">
+                topic_template_id = #{record.topicTemplateId,jdbcType=INTEGER},
+            </if>
+            <if test="record.topicTagId != null">
+                topic_tag_id = #{record.topicTagId,jdbcType=INTEGER},
+            </if>
+            <if test="record.sortOrder != null">
+                sort_order = #{record.sortOrder,jdbcType=INTEGER},
+            </if>
+            <if test="record.isShow != null">
+                is_show = #{record.isShow,jdbcType=BIT},
+            </if>
+            <if test="record.content != null">
+                content = #{record.content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExampleWithBLOBs" parameterType="map">
+        update nideshop_topic
+        set id = #{record.id,jdbcType=INTEGER},
+        title = #{record.title,jdbcType=VARCHAR},
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+        item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+        subtitle = #{record.subtitle,jdbcType=VARCHAR},
+        topic_category_id = #{record.topicCategoryId,jdbcType=INTEGER},
+        price_info = #{record.priceInfo,jdbcType=DECIMAL},
+        read_count = #{record.readCount,jdbcType=VARCHAR},
+        scene_pic_url = #{record.scenePicUrl,jdbcType=VARCHAR},
+        topic_template_id = #{record.topicTemplateId,jdbcType=INTEGER},
+        topic_tag_id = #{record.topicTagId,jdbcType=INTEGER},
+        sort_order = #{record.sortOrder,jdbcType=INTEGER},
+        is_show = #{record.isShow,jdbcType=BIT},
+        content = #{record.content,jdbcType=LONGVARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_topic
+        set id = #{record.id,jdbcType=INTEGER},
+        title = #{record.title,jdbcType=VARCHAR},
+        avatar = #{record.avatar,jdbcType=VARCHAR},
+        item_pic_url = #{record.itemPicUrl,jdbcType=VARCHAR},
+        subtitle = #{record.subtitle,jdbcType=VARCHAR},
+        topic_category_id = #{record.topicCategoryId,jdbcType=INTEGER},
+        price_info = #{record.priceInfo,jdbcType=DECIMAL},
+        read_count = #{record.readCount,jdbcType=VARCHAR},
+        scene_pic_url = #{record.scenePicUrl,jdbcType=VARCHAR},
+        topic_template_id = #{record.topicTemplateId,jdbcType=INTEGER},
+        topic_tag_id = #{record.topicTagId,jdbcType=INTEGER},
+        sort_order = #{record.sortOrder,jdbcType=INTEGER},
+        is_show = #{record.isShow,jdbcType=BIT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+</mapper>

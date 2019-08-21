@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.NideshopCategoryMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.NideshopCategory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
+        <result column="keywords" property="keywords" jdbcType="VARCHAR"/>
+        <result column="front_desc" property="frontDesc" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+        <result column="sort_order" property="sortOrder" jdbcType="BIT"/>
+        <result column="show_index" property="showIndex" jdbcType="BIT"/>
+        <result column="is_show" property="isShow" jdbcType="BIT"/>
+        <result column="banner_url" property="bannerUrl" jdbcType="VARCHAR"/>
+        <result column="icon_url" property="iconUrl" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+        <result column="wap_banner_url" property="wapBannerUrl" jdbcType="VARCHAR"/>
+        <result column="level" property="level" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="front_name" property="frontName" jdbcType="VARCHAR"/>
+    </resultMap>
+    <resultMap id="NavListMap" type="net.messi.early.pojo.NideshopCategory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="category_id" property="categoryId" jdbcType="VARCHAR"/>
+        <result column="parent_id" property="parentId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="navList" resultMap="NavListMap">
+        select id,name,category_id,parent_id from nideshop_category
+    </select>
+
+    <select id="subCategory" resultMap="BaseResultMap" parameterType="String">
+        select * from nideshop_category where parent_id = #{parentId}
+    </select>
+
+    <select id="currentCategory" resultType="net.messi.early.pojo.NideshopCategory">
+        select id,name,category_id as categoryId,wap_banner_url as wapBannerUrl,front_name as frontName from
+        nideshop_category where category_id= '1102'
+    </select>
+
+    <select id="findByCategoryId" resultType="net.messi.early.pojo.NideshopCategory" parameterType="Integer">
+        select id,name,category_id as categoryId,wap_banner_url as wapBannerUrl,front_name as frontName from
+        nideshop_category where category_id= #{categorId}
+    </select>
+
+    <select id="findOne" parameterType="Integer" resultType="net.messi.early.pojo.NideshopCategory">
+        select id,name,category_id as categoryId,parent_id as parentId,wap_banner_url as wapBannerUrl,front_name as
+        frontName from nideshop_category where category_id = #{id}
+    </select>
+
+    <select id="findOneById" parameterType="String" resultType="net.messi.early.pojo.NideshopCategory">
+        select id,name,category_id as categoryId,wap_banner_url as wapBannerUrl,front_name as frontName from
+        nideshop_category where id = #{id}
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, name, category_id, keywords, front_desc, parent_id, sort_order, show_index, is_show,
+        banner_url, icon_url, img_url, wap_banner_url, level, type, front_name
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.NideshopCategoryExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from nideshop_category
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from nideshop_category
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from nideshop_category
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.NideshopCategoryExample">
+        delete from nideshop_category
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.NideshopCategory">
+        insert into nideshop_category (id, name, category_id,
+        keywords, front_desc, parent_id,
+        sort_order, show_index, is_show, banner_url,
+        icon_url, img_url, wap_banner_url,
+        level, type, front_name
+        )
+        values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR},
+        #{keywords,jdbcType=VARCHAR}, #{frontDesc,jdbcType=VARCHAR}, #{parentId,jdbcType=INTEGER},
+        #{sortOrder,jdbcType=BIT}, #{showIndex,jdbcType=BIT}, #{isShow,jdbcType=BIT}, #{bannerUrl,jdbcType=VARCHAR},
+        #{iconUrl,jdbcType=VARCHAR}, #{imgUrl,jdbcType=VARCHAR}, #{wapBannerUrl,jdbcType=VARCHAR},
+        #{level,jdbcType=VARCHAR}, #{type,jdbcType=INTEGER}, #{frontName,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.NideshopCategory">
+        insert into nideshop_category
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="categoryId != null">
+                category_id,
+            </if>
+            <if test="keywords != null">
+                keywords,
+            </if>
+            <if test="frontDesc != null">
+                front_desc,
+            </if>
+            <if test="parentId != null">
+                parent_id,
+            </if>
+            <if test="sortOrder != null">
+                sort_order,
+            </if>
+            <if test="showIndex != null">
+                show_index,
+            </if>
+            <if test="isShow != null">
+                is_show,
+            </if>
+            <if test="bannerUrl != null">
+                banner_url,
+            </if>
+            <if test="iconUrl != null">
+                icon_url,
+            </if>
+            <if test="imgUrl != null">
+                img_url,
+            </if>
+            <if test="wapBannerUrl != null">
+                wap_banner_url,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="type != null">
+                type,
+            </if>
+            <if test="frontName != null">
+                front_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="frontDesc != null">
+                #{frontDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="sortOrder != null">
+                #{sortOrder,jdbcType=BIT},
+            </if>
+            <if test="showIndex != null">
+                #{showIndex,jdbcType=BIT},
+            </if>
+            <if test="isShow != null">
+                #{isShow,jdbcType=BIT},
+            </if>
+            <if test="bannerUrl != null">
+                #{bannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="wapBannerUrl != null">
+                #{wapBannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                #{type,jdbcType=INTEGER},
+            </if>
+            <if test="frontName != null">
+                #{frontName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.NideshopCategoryExample"
+            resultType="java.lang.Integer">
+        select count(*) from nideshop_category
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update nideshop_category
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.categoryId != null">
+                category_id = #{record.categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.keywords != null">
+                keywords = #{record.keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="record.frontDesc != null">
+                front_desc = #{record.frontDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="record.parentId != null">
+                parent_id = #{record.parentId,jdbcType=INTEGER},
+            </if>
+            <if test="record.sortOrder != null">
+                sort_order = #{record.sortOrder,jdbcType=BIT},
+            </if>
+            <if test="record.showIndex != null">
+                show_index = #{record.showIndex,jdbcType=BIT},
+            </if>
+            <if test="record.isShow != null">
+                is_show = #{record.isShow,jdbcType=BIT},
+            </if>
+            <if test="record.bannerUrl != null">
+                banner_url = #{record.bannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.iconUrl != null">
+                icon_url = #{record.iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.imgUrl != null">
+                img_url = #{record.imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.wapBannerUrl != null">
+                wap_banner_url = #{record.wapBannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.level != null">
+                level = #{record.level,jdbcType=VARCHAR},
+            </if>
+            <if test="record.type != null">
+                type = #{record.type,jdbcType=INTEGER},
+            </if>
+            <if test="record.frontName != null">
+                front_name = #{record.frontName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update nideshop_category
+        set id = #{record.id,jdbcType=INTEGER},
+        name = #{record.name,jdbcType=VARCHAR},
+        category_id = #{record.categoryId,jdbcType=VARCHAR},
+        keywords = #{record.keywords,jdbcType=VARCHAR},
+        front_desc = #{record.frontDesc,jdbcType=VARCHAR},
+        parent_id = #{record.parentId,jdbcType=INTEGER},
+        sort_order = #{record.sortOrder,jdbcType=BIT},
+        show_index = #{record.showIndex,jdbcType=BIT},
+        is_show = #{record.isShow,jdbcType=BIT},
+        banner_url = #{record.bannerUrl,jdbcType=VARCHAR},
+        icon_url = #{record.iconUrl,jdbcType=VARCHAR},
+        img_url = #{record.imgUrl,jdbcType=VARCHAR},
+        wap_banner_url = #{record.wapBannerUrl,jdbcType=VARCHAR},
+        level = #{record.level,jdbcType=VARCHAR},
+        type = #{record.type,jdbcType=INTEGER},
+        front_name = #{record.frontName,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.NideshopCategory">
+        update nideshop_category
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="categoryId != null">
+                category_id = #{categoryId,jdbcType=VARCHAR},
+            </if>
+            <if test="keywords != null">
+                keywords = #{keywords,jdbcType=VARCHAR},
+            </if>
+            <if test="frontDesc != null">
+                front_desc = #{frontDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="parentId != null">
+                parent_id = #{parentId,jdbcType=INTEGER},
+            </if>
+            <if test="sortOrder != null">
+                sort_order = #{sortOrder,jdbcType=BIT},
+            </if>
+            <if test="showIndex != null">
+                show_index = #{showIndex,jdbcType=BIT},
+            </if>
+            <if test="isShow != null">
+                is_show = #{isShow,jdbcType=BIT},
+            </if>
+            <if test="bannerUrl != null">
+                banner_url = #{bannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="iconUrl != null">
+                icon_url = #{iconUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="imgUrl != null">
+                img_url = #{imgUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="wapBannerUrl != null">
+                wap_banner_url = #{wapBannerUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=INTEGER},
+            </if>
+            <if test="frontName != null">
+                front_name = #{frontName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.NideshopCategory">
+        update nideshop_category
+        set name = #{name,jdbcType=VARCHAR},
+        category_id = #{categoryId,jdbcType=VARCHAR},
+        keywords = #{keywords,jdbcType=VARCHAR},
+        front_desc = #{frontDesc,jdbcType=VARCHAR},
+        parent_id = #{parentId,jdbcType=INTEGER},
+        sort_order = #{sortOrder,jdbcType=BIT},
+        show_index = #{showIndex,jdbcType=BIT},
+        is_show = #{isShow,jdbcType=BIT},
+        banner_url = #{bannerUrl,jdbcType=VARCHAR},
+        icon_url = #{iconUrl,jdbcType=VARCHAR},
+        img_url = #{imgUrl,jdbcType=VARCHAR},
+        wap_banner_url = #{wapBannerUrl,jdbcType=VARCHAR},
+        level = #{level,jdbcType=VARCHAR},
+        type = #{type,jdbcType=INTEGER},
+        front_name = #{frontName,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>

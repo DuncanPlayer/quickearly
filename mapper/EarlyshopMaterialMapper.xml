@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.EarlyshopMaterialMapper">
+    <resultMap id="BaseResultMap" type="net.messi.early.pojo.EarlyshopMaterial">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="foodId" property="foodid" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="materialBrief" property="materialbrief" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="VARCHAR"/>
+        <result column="materialUrl" property="materialurl" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
+        <result column="materialType" property="materialtype" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="findMaterialByDefault" resultMap="BaseResultMap">
+        select * from earlyshop_material order by id asc limit #{page},#{size}
+    </select>
+
+    <select id="findMaterialByPriceAsc" resultMap="BaseResultMap">
+        select * from earlyshop_material order by price asc limit #{page},#{size}
+    </select>
+
+    <select id="findMaterialByPriceDesc" resultMap="BaseResultMap">
+        select * from earlyshop_material order by price desc limit #{page},#{size}
+    </select>
+
+    <select id="findMaterialByCategoryName" resultMap="BaseResultMap">
+        select * from earlyshop_material where materialType like CONCAT('%',#{categoryName},'%') order by id asc limit
+        #{page},#{size}
+    </select>
+
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, foodId, name, materialBrief, price, role, materialUrl, unit, materialType
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="net.messi.early.pojo.EarlyshopMaterialExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from earlyshop_material
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from earlyshop_material
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from earlyshop_material
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="net.messi.early.pojo.EarlyshopMaterialExample">
+        delete from earlyshop_material
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="net.messi.early.pojo.EarlyshopMaterial">
+        insert into earlyshop_material (id, foodId, name,
+        materialBrief, price, role,
+        materialUrl, unit, materialType
+        )
+        values (#{id,jdbcType=INTEGER}, #{foodid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+        #{materialbrief,jdbcType=VARCHAR}, #{price,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR},
+        #{materialurl,jdbcType=VARCHAR}, #{unit,jdbcType=VARCHAR}, #{materialtype,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="net.messi.early.pojo.EarlyshopMaterial">
+        insert into earlyshop_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="foodid != null">
+                foodId,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="materialbrief != null">
+                materialBrief,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="role != null">
+                role,
+            </if>
+            <if test="materialurl != null">
+                materialUrl,
+            </if>
+            <if test="unit != null">
+                unit,
+            </if>
+            <if test="materialtype != null">
+                materialType,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="foodid != null">
+                #{foodid,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="materialbrief != null">
+                #{materialbrief,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="materialurl != null">
+                #{materialurl,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="materialtype != null">
+                #{materialtype,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="net.messi.early.pojo.EarlyshopMaterialExample"
+            resultType="java.lang.Integer">
+        select count(*) from earlyshop_material
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update earlyshop_material
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.foodid != null">
+                foodId = #{record.foodid,jdbcType=VARCHAR},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.materialbrief != null">
+                materialBrief = #{record.materialbrief,jdbcType=VARCHAR},
+            </if>
+            <if test="record.price != null">
+                price = #{record.price,jdbcType=VARCHAR},
+            </if>
+            <if test="record.role != null">
+                role = #{record.role,jdbcType=VARCHAR},
+            </if>
+            <if test="record.materialurl != null">
+                materialUrl = #{record.materialurl,jdbcType=VARCHAR},
+            </if>
+            <if test="record.unit != null">
+                unit = #{record.unit,jdbcType=VARCHAR},
+            </if>
+            <if test="record.materialtype != null">
+                materialType = #{record.materialtype,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update earlyshop_material
+        set id = #{record.id,jdbcType=INTEGER},
+        foodId = #{record.foodid,jdbcType=VARCHAR},
+        name = #{record.name,jdbcType=VARCHAR},
+        materialBrief = #{record.materialbrief,jdbcType=VARCHAR},
+        price = #{record.price,jdbcType=VARCHAR},
+        role = #{record.role,jdbcType=VARCHAR},
+        materialUrl = #{record.materialurl,jdbcType=VARCHAR},
+        unit = #{record.unit,jdbcType=VARCHAR},
+        materialType = #{record.materialtype,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="net.messi.early.pojo.EarlyshopMaterial">
+        update earlyshop_material
+        <set>
+            <if test="foodid != null">
+                foodId = #{foodid,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="materialbrief != null">
+                materialBrief = #{materialbrief,jdbcType=VARCHAR},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=VARCHAR},
+            </if>
+            <if test="role != null">
+                role = #{role,jdbcType=VARCHAR},
+            </if>
+            <if test="materialurl != null">
+                materialUrl = #{materialurl,jdbcType=VARCHAR},
+            </if>
+            <if test="unit != null">
+                unit = #{unit,jdbcType=VARCHAR},
+            </if>
+            <if test="materialtype != null">
+                materialType = #{materialtype,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="net.messi.early.pojo.EarlyshopMaterial">
+        update earlyshop_material
+        set foodId = #{foodid,jdbcType=VARCHAR},
+        name = #{name,jdbcType=VARCHAR},
+        materialBrief = #{materialbrief,jdbcType=VARCHAR},
+        price = #{price,jdbcType=VARCHAR},
+        role = #{role,jdbcType=VARCHAR},
+        materialUrl = #{materialurl,jdbcType=VARCHAR},
+        unit = #{unit,jdbcType=VARCHAR},
+        materialType = #{materialtype,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+</mapper>
