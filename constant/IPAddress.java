@@ -7,4 +7,6 @@ public interface IPAddress {
     //缓存服务
     public static final String CACHEADDRESS = "http://192.168.43.12:8080/";
 
+    public static final String  ITEMCFIP= "jdbc:mysql://192.168.43.12:3306/earlydetail?useSSL=false";
+
 }
