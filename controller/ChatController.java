@@ -25,7 +25,7 @@ public class ChatController {
     @RequestMapping("/upload")
     public JSONResult chatUpload(@RequestParam("file") MultipartFile[] files) throws Exception {
         // 文件保存的命名空间
-        String fileSpace = "G:/weixinPlay/userImages";
+        String fileSpace = "/usr/local/userImages";
         //保存到数据库中的相对路径
         String uploadPathDB = "/" + "chat" + "/face";
 

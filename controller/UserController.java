@@ -42,8 +42,6 @@ public class UserController {
         //token
         userInfo.setToken(UUID.randomUUID().toString());
 
-        //redisService.set("messi",new Gson().toJson(userInfo));
-
         if (nideshopUser != null) {
             request.getSession().setAttribute("nickName", userInfo);
             return JSONResult.ok(userInfo);

@@ -1,5 +1,6 @@
 package net.messi.early.controller;
 
+import net.messi.early.holder.DyncmicDataSourceHolder;
 import net.messi.early.mapper.EarlyshopQrcodeMapper;
 import net.messi.early.mapper.EarlyshopReservationGoodsMapper;
 import net.messi.early.mapper.EarlyshopReservationMapper;
@@ -51,7 +52,7 @@ public class QrcodeController {
             //以时间戳作为图片得名称
             String imageName = System.currentTimeMillis() + ".jpg";
             // 生成的二维码的路径及名称
-            String destPath = "G:/weixinPlay/userImages/qrCode/face/" + imageName;
+            String destPath = "/usr/local/userImages/qrCode/face/" + imageName;
             //保存相对路径---返回给小程序端
             imageSrc = "/qrCode/face/" + imageName;
             //生成二维码
@@ -63,6 +64,7 @@ public class QrcodeController {
             qrcode.setQrcontent(singleProof);
             qrcode.setIsused("0");
 
+            DyncmicDataSourceHolder.setWrite();
             qrcodeMapper.insert(qrcode);
         } else {
             //数据库已经有该二维码

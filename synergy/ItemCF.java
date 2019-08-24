@@ -1,6 +1,7 @@
 package net.messi.early.synergy;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
+import net.messi.early.constant.IPAddress;
 import org.apache.mahout.cf.taste.impl.model.jdbc.MySQLJDBCDataModel;
 import org.apache.mahout.cf.taste.impl.recommender.GenericItemBasedRecommender;
 import org.apache.mahout.cf.taste.impl.similarity.PearsonCorrelationSimilarity;
@@ -8,10 +9,8 @@ import org.apache.mahout.cf.taste.model.DataModel;
 import org.apache.mahout.cf.taste.model.JDBCDataModel;
 import org.apache.mahout.cf.taste.recommender.RecommendedItem;
 import org.apache.mahout.cf.taste.similarity.ItemSimilarity;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ItemCF {
 
@@ -19,9 +18,9 @@ public class ItemCF {
     public static Integer RECOMMEDSIZE = 6;
 
     public ItemCF() {
-        dataSource.setUrl("jdbc:mysql://localhost:3306/earlydetail?useSSL=false");
-        dataSource.setUser("root");
-        dataSource.setPassword("123456");
+        dataSource.setUrl(IPAddress.ITEMCFIP);
+        dataSource.setUser("repl");
+        dataSource.setPassword("repl");
         dataSource.setServerName("localhost");
         dataSource.setDatabaseName("earlydetail");
     }

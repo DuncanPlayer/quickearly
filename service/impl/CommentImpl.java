@@ -113,7 +113,7 @@ public class CommentImpl implements CommentService {
         return all;
     }
 
-    public List<NideshopComment> publicData(List<NideshopComment> commentList) {
+    private List<NideshopComment> publicData(List<NideshopComment> commentList) {
         for (NideshopComment comment : commentList) {
             NideshopCommentPictureExample pictureExample = new NideshopCommentPictureExample();
             NideshopCommentPictureExample.Criteria pictureCri = pictureExample.createCriteria();

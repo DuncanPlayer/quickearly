@@ -33,7 +33,7 @@ public class PayController {
 //        AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();
 //
 //        //支付成功返回地址
-//        alipayRequest.setReturnUrl("http://192.168.43.42:8080/pages/payResult/payResult?status=true' + '&orderId="+orderId+"'");
+//        alipayRequest.setReturnUrl("http://192.168.43.12:8080/pages/payResult/payResult?status=true' + '&orderId="+orderId+"'");
 //        alipayRequest.setNotifyUrl("http://localhost:8080/love/tyer/pay_notify.jsp");
 //
 //        JSONObject json = new JSONObject();
