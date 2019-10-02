@@ -142,7 +142,6 @@ public class SearchImpl implements SearchService {
         if (searchHistories.size() <= 0 || null == searchHistories) {
             searchHistoryMapper.insert(history);
         }
-
         DyncmicDataSourceHolder.setWrite();
         //保存检索词
         EarlyshopRecommend earlyshopRecommend = new EarlyshopRecommend();

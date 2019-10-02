@@ -53,6 +53,10 @@ public class GoodsImpl implements GoodsService {
     @Autowired
     private NideshopCommentPictureMapper pictureMapper;
 
+    @Autowired
+    private NideshopCartMapper cartMapper;
+
+
     @Override
     public List<NideshopGoods> newGoods() {
         List<NideshopGoods> newsGoods = goodsMapper.findGoodsByNewGoods();

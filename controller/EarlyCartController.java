@@ -1,15 +1,21 @@
 package net.messi.early.controller;
 
+import com.alibaba.fastjson.JSON;
 import net.messi.early.VO.CartTotal;
 import net.messi.early.dto.CartIndexDTO;
 import net.messi.early.mapper.NideshopGoodsMapper;
+import net.messi.early.pojo.NideshopCart;
 import net.messi.early.pojo.NideshopGoods;
 import net.messi.early.service.CartService;
 import net.messi.early.utils.IDUtils;
 import net.messi.early.utils.JSONResult;
 import net.messi.early.utils.PriceTotal;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import redis.clients.jedis.JedisCluster;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -35,6 +41,12 @@ public class EarlyCartController {
     @Autowired
     private CartService cartService;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    @Autowired
+    private JedisCluster jedisCluster;
+
     @ResponseBody
     @RequestMapping("/goodscount")
     public JSONResult cartGoodsCount() {
@@ -47,13 +59,18 @@ public class EarlyCartController {
 
     @ResponseBody
     @RequestMapping("/index")
-    public JSONResult cartIndex() {
+    public JSONResult cartIndex(Integer userId) {
         if (cart.size() == 0) {
             cart = new ArrayList<>();
             cartIndexDTO.setCartTotal(cartTotal);
             cartIndexDTO.getCartTotal().setGoodsCount(0);
             cartIndexDTO.setCartList(cart);
         } else {
+            // 从缓存获取
+            String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
+            if (cartListStr != null){
+                cart = JSON.parseArray(cartListStr, NideshopGoods.class);
+            }
             //cartTotal计算总价
             cartTotal.setGoodsAmount(new BigDecimal(0.00f).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
             if (cartGoodsCount > 0) {
@@ -105,7 +122,12 @@ public class EarlyCartController {
 
     @ResponseBody
     @RequestMapping("/add")
-    public JSONResult cartAdd(Integer goodsId, Integer number, Integer resPrice) {
+    public JSONResult cartAdd(Integer userId,Integer goodsId, Integer number, Integer resPrice) {
+        //1 从缓存获取
+        String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
+        if (cartListStr != null){
+            cart = JSON.parseArray(cartListStr, NideshopGoods.class);
+        }
         boolean isRepeat = false;
         NideshopGoods goods = goodsMapper.findGoodsByGoodsSn(goodsId + "");
         goods.setSellNum(number);
@@ -125,7 +147,15 @@ public class EarlyCartController {
         }
         if (!isRepeat) {
             cart.add(goods);
+            //发送到消息队列，保存到数据库
+            NideshopCart cart = goodsCopyToCart(userId,goods);
+            Message message = new Message(JSON.toJSONString(cart).getBytes(),new MessageProperties());
+            rabbitTemplate.send("CartExchange","cart_queue_key",message);
         }
+
+        //2 存入缓存
+        jedisCluster.set("quickearly-cart-"+userId,JSON.toJSONString(cart));
+
         cartGoodsCount = cartGoodsCount + number;
         cartTotal.setGoodsCount(cartGoodsCount);
         cartIndexDTO.setCartTotal(cartTotal);
@@ -133,11 +163,25 @@ public class EarlyCartController {
         return JSONResult.ok(cartGoodsCount);
     }
 
+    private NideshopCart goodsCopyToCart(Integer userId,NideshopGoods goods){
+        NideshopCart cart = new NideshopCart();
+        cart.setGoodsId(goods.getId());
+        cart.setChecked(false);
+        cart.setGoodsName(goods.getName());
+        cart.setGoodsSn(goods.getGoodsSn());
+        cart.setGoodsSpecifitionIds(null);
+        cart.setGoodsSpecifitionNameValue(null);
+        cart.setListPicUrl(goods.getListPicUrl());
+        cart.setNumber(goods.getSellNum().shortValue());
+        cart.setRetailPrice(goods.getRetailPrice());
+        cart.setUserId(userId);
+        return cart;
+    }
+
     // 选择或取消选择商品
     @ResponseBody
     @RequestMapping("/checked")
     public JSONResult cartCheck(String productIds, Integer isChecked, Integer allChecked) {
-        //System.out.println(productIds+" "+isChecked+"allChecked:::"+allChecked);
         NideshopGoods goods = goodsMapper.findGoodsByGoodsSn(productIds);
         //allChecked 1：全选；allChecked 0：取消全选
         if (allChecked == 1 && Integer.parseInt(productIds) == 0 && productIds.equals("0")) {
@@ -188,7 +232,6 @@ public class EarlyCartController {
 
     /**
      * 更新cart
-     *
      * @param productId
      * @param goodsId
      * @param number

@@ -2,21 +2,19 @@ package net.messi.early.service.impl;
 
 import net.messi.early.VO.CartTotal;
 import net.messi.early.dto.CheckOutDTO;
-import net.messi.early.mapper.NideshopAddressMapper;
-import net.messi.early.mapper.NideshopCouponMapper;
-import net.messi.early.mapper.NideshopGoodsMapper;
-import net.messi.early.mapper.NideshopUserCouponMapper;
+import net.messi.early.mapper.*;
 import net.messi.early.pojo.*;
 import net.messi.early.service.CartService;
 import net.messi.early.utils.PriceTotal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.JedisCluster;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("cartService")
 public class CartServiceImpl implements CartService {
 
     @Autowired
@@ -30,6 +28,20 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private NideshopGoodsMapper goodsMapper;
+
+    @Autowired
+    private NideshopCartMapper cartMapper;
+
+    @Autowired
+    private JedisCluster jedisCluster;
+
+    @Override
+    public void saveNideshopCart(NideshopCart cart) {
+        //先存缓存
+        //再存数据库
+
+        cartMapper.insertSelective(cart);
+    }
 
     @Override
     public CheckOutDTO payOrderNeed(Integer addressId, Integer couponId, Integer userId, CartTotal cartTotal, List<NideshopGoods> currentCart) {

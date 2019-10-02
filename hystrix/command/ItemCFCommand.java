@@ -34,19 +34,19 @@ public class ItemCFCommand extends HystrixCommand<List<NideshopGoods>> {
         List<Integer> idList = null;
         NideshopGoods goods = goodsService.findByGoodsSn(id);
         //插入用户访问记录 userid goodsid  喜欢度量10-20
-        goodsService.insertItemCf(userId, Integer.parseInt(goods.getGoodsSn()), NumberUtils.randomTenToTwenty());
-        try {
-            idList = new ItemCF().itemCF(userId, Integer.parseInt(goods.getGoodsSn()), ItemCF.RECOMMEDSIZE);
-            if (idList.size() < 6) {
-                //默认推荐
-                goodsList = goodsService.findRelateGoodsById(new ItemCF().itemCF(userId, DEFAULTRECOMMENDGID, ItemCF.RECOMMEDSIZE));
-            } else {
-                goodsList = goodsService.findRelateGoodsById(idList);
-            }
-        } catch (Exception e) {
-            System.out.println("ItemCF");
-            e.printStackTrace();
-        }
+//        goodsService.insertItemCf(userId, Integer.parseInt(goods.getGoodsSn()), NumberUtils.randomTenToTwenty());
+//        try {
+//            idList = new ItemCF().itemCF(userId, Integer.parseInt(goods.getGoodsSn()), ItemCF.RECOMMEDSIZE);
+//            if (idList.size() < 6) {
+//                //默认推荐
+//                goodsList = goodsService.findRelateGoodsById(new ItemCF().itemCF(userId, DEFAULTRECOMMENDGID, ItemCF.RECOMMEDSIZE));
+//            } else {
+//                goodsList = goodsService.findRelateGoodsById(idList);
+//            }
+//        } catch (Exception e) {
+//            System.out.println("ItemCF");
+//            e.printStackTrace();
+//        }
         return goodsList;
     }
 

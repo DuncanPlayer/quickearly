@@ -1,6 +1,7 @@
 package net.messi.early.service;
 
 import net.messi.early.dto.*;
+import net.messi.early.pojo.NideshopCart;
 import net.messi.early.pojo.NideshopCategory;
 import net.messi.early.pojo.NideshopGoods;
 
@@ -45,4 +46,6 @@ public interface GoodsService {
 
     //最新库存
     Integer lasteInventory(Integer goodsId);
+
+
 }
