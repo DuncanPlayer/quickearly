@@ -53,6 +53,7 @@ public class OrderServiceImpl implements OrderService {
         NideshopCoupon coupon = couponMapper.selectByPrimaryKey(couponId.shortValue());
         NideshopOrder order = new NideshopOrder();
         order.setAddTime(Long.toString(System.currentTimeMillis()));
+        //TODO 订单oderSn 加锁性能下降
         String oderSn = NumberUtils.randomNumber();
         if (address != null) {
             order.setOrderSn(oderSn);
