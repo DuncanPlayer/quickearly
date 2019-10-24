@@ -9,7 +9,7 @@ public class DyncmicDataSourceHolder {
 
     private static Logger logger = LoggerFactory.getLogger(DyncmicDataSourceHolder.class);
     /**
-     * 保证线程安全，使用线程threadlocal
+     * 保证线程安全123，使用线程threadlocal
      */
     private static ThreadLocal<String> contextHolder = new ThreadLocal<String>();
 
