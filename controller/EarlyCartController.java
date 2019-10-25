@@ -20,14 +20,15 @@ import redis.clients.jedis.JedisCluster;
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequestMapping("cart")
 public class EarlyCartController {
 
-    private static List<NideshopGoods> cart = new ArrayList<>();
-    public static List<NideshopGoods> currentCart = new ArrayList<>();
-    public static List<NideshopGoods> reservationCart = new ArrayList<>();
+    private static List<NideshopGoods> cart = new CopyOnWriteArrayList<>();
+    public static List<NideshopGoods> currentCart = new CopyOnWriteArrayList<>();
+    public static List<NideshopGoods> reservationCart = new CopyOnWriteArrayList<>();
 
     private static Integer cartGoodsCount = 0;
 
@@ -66,7 +67,7 @@ public class EarlyCartController {
             cartIndexDTO.getCartTotal().setGoodsCount(0);
             cartIndexDTO.setCartList(cart);
         } else {
-            // 从缓存获取
+            //从缓存获取
             String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
             if (cartListStr != null){
                 cart = JSON.parseArray(cartListStr, NideshopGoods.class);
@@ -150,9 +151,12 @@ public class EarlyCartController {
             //发送到消息队列，保存到数据库
             NideshopCart cart = goodsCopyToCart(userId,goods);
             Message message = new Message(JSON.toJSONString(cart).getBytes(),new MessageProperties());
-            rabbitTemplate.send("CartExchange","cart_queue_key",message);
+            try {
+                rabbitTemplate.send("CartExchange","cart_queue_key",message);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
-
         //2 存入缓存
         jedisCluster.set("quickearly-cart-"+userId,JSON.toJSONString(cart));
 
@@ -311,7 +315,7 @@ public class EarlyCartController {
      */
     @ResponseBody
     @RequestMapping("/delete")
-    public JSONResult cartDelete(String productIds) {
+    public JSONResult cartDelete(String productIds,Integer userId) {
         List<NideshopGoods> copyList = cart;
         if (productIds.contains(",")) {
             List<String> goodsSn = Arrays.asList(productIds.split(","));
@@ -335,6 +339,8 @@ public class EarlyCartController {
                 }
             }
         }
+        jedisCluster.del("quickearly-cart"+ userId);
+
         cartTotal.setCheckedGoodsAmount(new BigDecimal(PriceTotal.totalPrice(currentCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
         cartIndexDTO.setCartTotal(cartTotal);
         cartIndexDTO.setCartList(cart);

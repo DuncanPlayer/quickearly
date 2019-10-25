@@ -32,15 +32,16 @@ public class CartServiceImpl implements CartService {
     @Autowired
     private NideshopCartMapper cartMapper;
 
-    @Autowired
-    private JedisCluster jedisCluster;
 
     @Override
     public void saveNideshopCart(NideshopCart cart) {
         //先存缓存
         //再存数据库
-
-        cartMapper.insertSelective(cart);
+        try{
+            cartMapper.insertSelective(cart);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @Override
