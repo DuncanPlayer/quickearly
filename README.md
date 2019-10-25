@@ -1,5 +1,6 @@
-## 简述
-关于早餐配送And在线的微信小程序，理想经营范围为人口密集的小区。用户可以提前预定，选择预定时间，也可以立即下单，查看配送进度
+## 简述(趁早早餐)
+关于早餐配送And在线售卖的微信小程序，理想经营范围为人口密集的小区。用户可以提前预定，选择预定时间，也可以立即下单
+，查看配送进度,也可以预定好了，到店给出二维码即可取早餐,结束在人多的时候排队的时间
 ## 图片简介
 ![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/early.JPG)![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/detail.JPG)![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/qrCode.JPG)
 ## 主要技术点
@@ -14,10 +15,12 @@
 - 配置MySQL的binlog文件进行读写分离
 - Spring+Spring MVC+Mybatis整合开发
 - 采用基于物品的协同过滤算法为用户推荐
-## 依赖环境
+## 使用环境
 - Centos7
 - JDK8
 - Maven3.5
 - MySQL5.6
 - 微信web开发者工具
 - IntelliJ IDEA2018
+## 方便面的微信二维码
+![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/sby.JPG)
