@@ -2,7 +2,7 @@
 关于早餐配送And在线售卖的微信小程序，理想经营范围为人口密集的小区。用户可以提前预定，选择预定时间，也可以立即下单
 ，查看配送进度,也可以预定好了，到店给出二维码即可取早餐,节约在人多的时候排队的时间
 ## 图片简介
-![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/early.JPG)![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/detail.JPG)![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/qrCode.JPG)
+![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/early.JPG)![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/detail.JPG)![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/qrCode.JPG)
 ## 主要技术点
 - 配置三个节点的Nginx作为负载均衡器，第一个Nginx负责请求分发给后面两个Nginx，最后再把请求发送到不同的Tomcat容器
 - 使用Redis Cluster作为早餐详细页面的第一级缓存
@@ -23,4 +23,4 @@
 - 微信web开发者工具
 - IntelliJ IDEA2018
 ## 方便面的微信二维码
-![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/sby.JPG)
+![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/sby.JPG)
