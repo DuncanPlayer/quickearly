@@ -237,7 +237,6 @@ public class ZooKeeperSession {
      * @author Administrator
      */
     private class ZooKeeperWatcher implements Watcher {
-
         public void process(WatchedEvent event) {
             System.out.println("Receive watched event: " + event.getState());
             if (KeeperState.SyncConnected == event.getState()) {
@@ -263,7 +262,6 @@ public class ZooKeeperSession {
         public static ZooKeeperSession getInstance() {
             return instance;
         }
-
     }
 
     /**

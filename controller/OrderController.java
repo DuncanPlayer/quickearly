@@ -28,7 +28,7 @@ public class OrderController {
      * @param addressId
      * @param couponId
      * @param actualPrice
-     * @param content     用户得特殊需求
+     * @param content
      * @return
      */
     @ResponseBody

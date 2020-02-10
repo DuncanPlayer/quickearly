@@ -16,6 +16,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.exceptions.JedisNoReachableClusterNodeException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -51,24 +52,27 @@ public class EarlyCartController {
     @ResponseBody
     @RequestMapping("/goodscount")
     public JSONResult cartGoodsCount() {
-
         cartTotal.setGoodsCount(cartGoodsCount);
         cartIndexDTO.setCartTotal(cartTotal);
-
         return JSONResult.ok(cartIndexDTO.getCartTotal().getGoodsCount());
     }
 
     @ResponseBody
     @RequestMapping("/index")
     public JSONResult cartIndex(Integer userId) {
-        if (cart.size() == 0) {
+        //从缓存获取
+        String cartListStr = null;
+        try{
+            cartListStr = jedisCluster.get("quickearly-cart-"+userId);
+        }catch (JedisNoReachableClusterNodeException e){
+            cartListStr = null;
+        }
+        if (cart.size() == 0 && null == cartListStr) {
             cart = new ArrayList<>();
             cartIndexDTO.setCartTotal(cartTotal);
             cartIndexDTO.getCartTotal().setGoodsCount(0);
             cartIndexDTO.setCartList(cart);
         } else {
-            //从缓存获取
-            String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
             if (cartListStr != null){
                 cart = JSON.parseArray(cartListStr, NideshopGoods.class);
             }
@@ -125,10 +129,15 @@ public class EarlyCartController {
     @RequestMapping("/add")
     public JSONResult cartAdd(Integer userId,Integer goodsId, Integer number, Integer resPrice) {
         //1 从缓存获取
-        String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
-        if (cartListStr != null){
-            cart = JSON.parseArray(cartListStr, NideshopGoods.class);
+        try{
+            String cartListStr = jedisCluster.get("quickearly-cart-"+userId);
+            if (cartListStr != null){
+                cart = JSON.parseArray(cartListStr, NideshopGoods.class);
+            }
+        }catch (JedisNoReachableClusterNodeException e){
+            jedisCluster.set("quickearly-cart-"+userId,JSON.toJSONString(cart));
         }
+
         boolean isRepeat = false;
         NideshopGoods goods = goodsMapper.findGoodsByGoodsSn(goodsId + "");
         goods.setSellNum(number);

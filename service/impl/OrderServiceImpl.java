@@ -46,7 +46,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Integer aPartOfOrderInfo(Integer addressId, Integer couponId, Float actualPrice, String content) {
-        DyncmicDataSourceHolder.setWrite();
         //找到Address
         NideshopAddress address = addressMapper.selectByPrimaryKey(addressId);
         //找到Coupon
@@ -74,13 +73,13 @@ public class OrderServiceImpl implements OrderService {
         if (coupon != null) {
             order.setCouponId(new Integer(coupon.getId()));
         }
+        DyncmicDataSourceHolder.setWrite();
         orderMapper.insert(order);
         //根据orderSn找到刚才插入那条记录
         NideshopOrderExample orderExample = new NideshopOrderExample();
         NideshopOrderExample.Criteria criteria = orderExample.createCriteria();
         criteria.andOrderSnEqualTo(oderSn);
         List<NideshopOrder> orderList = orderMapper.selectByExample(orderExample);
-
         return orderList.get(0).getId();
     }
 
