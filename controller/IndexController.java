@@ -29,7 +29,7 @@ public class IndexController {
     @GetMapping("/index")
     public JSONResult index() {
         IndexDTO indexDTO = new IndexDTO();
-        indexDTO.setBanner(adService.listAd());
+//        indexDTO.setBanner(adService.listAd());
         indexDTO.setChannel(channelService.channelList());
         indexDTO.setBrandList(brandService.brandList());
         indexDTO.setNewGoodsList(goodsService.newGoods());

@@ -1,0 +1,31 @@
+[{
+  "adPositionId": 1,
+  "content": "美味快手的经典美帝巧克力软曲奇",
+  "enabled": 1,
+  "endTime": 0,
+  "id": 1,
+  "imageUrl": "http://i1.chuimg.com/255b240f33b042bbb0859154dddbae6d_3200w_2400h.jpg@2o_50sh_1pr_1l_660w_90q_1wh",
+  "link": "../goods/goods?id=2725",
+  "mediaType": 1,
+  "name": "皮蛋瘦肉粥"
+}, {
+  "adPositionId": 1,
+  "content": "香蕉蓝莓烤燕麦",
+  "enabled": 1,
+  "endTime": 0,
+  "id": 2,
+  "imageUrl": "http://i1.chuimg.com/f34e780569b747709a43f3545dffb607_2799w_2100h.jpg@2o_50sh_1pr_1l_660w_90q_1wh",
+  "link": "../goods/goods?id=2967",
+  "mediaType": 1,
+  "name": "香蕉蓝莓烤燕麦"
+}, {
+  "adPositionId": 1,
+  "content": "快手早餐—葱油拌面",
+  "enabled": 1,
+  "endTime": 0,
+  "id": 3,
+  "imageUrl": "http://i2.chuimg.com/f28273da892511e6a9a10242ac110002_4928w_3264h.jpg?imageView2/2/w/660/interlace/1/q/90",
+  "link": "../goods/goods?id=47",
+  "mediaType": 1,
+  "name": "葱油拌面"
+}]
