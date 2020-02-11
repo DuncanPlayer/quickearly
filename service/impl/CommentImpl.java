@@ -129,7 +129,6 @@ public class CommentImpl implements CommentService {
 
     @Override
     public Integer evaluation(String goodsSn, Integer userId, String content, Integer orderId) {
-        System.out.println(goodsSn + " " + userId + " " + orderId);
         NideshopComment comment = new NideshopComment();
         //1、建立同义词库 分出好中差评
         byte typeid = 0;

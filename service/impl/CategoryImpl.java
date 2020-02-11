@@ -38,7 +38,6 @@ public class CategoryImpl implements CategoryService {
                 }
             } else {
                 newList = categoryMapper.subCategory(nideshopCategory.getParentId() + "");
-                System.out.println(newList.size());
             }
         } else {
             List<NideshopCategory> list = categoryMapper.navList();

@@ -138,7 +138,6 @@ public class MaterialImpl implements MaterialService {
 
         iconNumDTO.setOrderNum(iconOrderNum);
         iconNumDTO.setReservationNum(iconReNum);
-        System.out.println(iconOrderNum + " " + iconReNum);
         return iconNumDTO;
     }
 }

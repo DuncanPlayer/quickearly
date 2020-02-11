@@ -191,7 +191,10 @@ public class EarlyCartController {
         return cart;
     }
 
-    // 选择或取消选择商品
+    /**
+     * 选择或取消选择商品
+     *
+     */
     @ResponseBody
     @RequestMapping("/checked")
     public JSONResult cartCheck(String productIds, Integer isChecked, Integer allChecked) {
@@ -224,9 +227,19 @@ public class EarlyCartController {
                 if (isChecked == 0 && nideshopGoods.getGoodsSn().equals(productIds)) {  //false    用户未选中
                     nideshopGoods.setIsChecked("true");
                     cartTotal.setCheckedGoodsCount(nideshopGoods.getSellNum() + cartTotal.getCheckedGoodsCount());
-                    if (nideshopGoods.getGoodsSn().equals(productIds) && !currentCart.contains(nideshopGoods)) {
-                        currentCart.add(nideshopGoods);
-                        cartTotal.setCheckedGoodsAmount(new BigDecimal(PriceTotal.totalPrice(currentCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+                    if (nideshopGoods.getGoodsSn().equals(productIds)) {
+                        boolean isRepeat = false;
+                        if (currentCart.size() > 0) {
+                            for (NideshopGoods nideshopGoodsCurrent : currentCart) {
+                                if (nideshopGoodsCurrent.getGoodsSn().equals(nideshopGoods.getGoodsSn())) {
+                                    isRepeat = true;
+                                }
+                            }
+                        }
+                        if (!isRepeat){
+                            currentCart.add(nideshopGoods);
+                            cartTotal.setCheckedGoodsAmount(new BigDecimal(PriceTotal.totalPrice(currentCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
+                        }
                     }
                 } else if (isChecked == 1 && nideshopGoods.getGoodsSn().equals(productIds)) {
                     nideshopGoods.setIsChecked("false");
