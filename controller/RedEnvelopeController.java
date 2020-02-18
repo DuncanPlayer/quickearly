@@ -28,6 +28,12 @@ public class RedEnvelopeController {
     }
 
 
+    /**
+     * 记录用户优惠卷
+     * @param userId
+     * @param couponId
+     * @return
+     */
     @ResponseBody
     @RequestMapping("/addRedEnvelope")
     public JSONResult addRedEnvelope(Integer userId, Integer couponId) {
