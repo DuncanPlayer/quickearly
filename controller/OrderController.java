@@ -20,6 +20,7 @@ import redis.clients.jedis.JedisCluster;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequestMapping("order")
@@ -47,7 +48,7 @@ public class OrderController {
         //1、记录订单得部分信息
         Integer orderId = orderService.aPartOfOrderInfo(addressId, couponId, actualPrice, content);
         //2、需要记录所需购买物品得详细信息
-        orderService.orderDetailInfo(orderId, EarlyCartController.currentCart);
+        orderService.orderDetailInfo(orderId, EarlyCartController.currentCartMap.get(Integer.parseInt(userId)));
         //3、清除已下单的购物车
         String cartListStr = jedisCluster.get("quickearly-cart-" + userId);
         List<NideshopGoods> cart = null;
@@ -55,7 +56,7 @@ public class OrderController {
             cart = JSON.parseArray(cartListStr, NideshopGoods.class);
         }
         List<String> goodsSnList = new ArrayList<>();
-        for (NideshopGoods cg:EarlyCartController.currentCart) {
+        for (NideshopGoods cg:EarlyCartController.currentCartMap.get(Integer.parseInt(userId))) {
             goodsSnList.add(cg.getGoodsSn());
         }
         Iterator<NideshopGoods> goodsIterator = cart.iterator();
@@ -66,7 +67,7 @@ public class OrderController {
             }
         }
         jedisCluster.set("quickearly-cart-"+userId,JSON.toJSONString(IteratorUtils.toList(goodsIterator)));
-        EarlyCartController.currentCart.clear();
+        EarlyCartController.currentCartMap.put(Integer.parseInt(userId),new CopyOnWriteArrayList<>());
         //4、发送到消息队列通知库存变更 放到了orderDetailInfo里面去处理
         //TODO 发送到消息队列通知库存变更 放到了orderDetailInfo里面去处理
         return JSONResult.ok(orderId);
@@ -81,11 +82,11 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping("/reservationSubmit")
-    public JSONResult reservationSubmit(Integer addressId, Integer couponId, Float actualPrice, String content, String endTime) {
+    public JSONResult reservationSubmit(Integer userId,Integer addressId, Integer couponId, Float actualPrice, String content, String endTime) {
         //记录部分预定信息
         Integer reservationId = rerservationService.aPartOfRerservationInfo(addressId, couponId, actualPrice, content, endTime);
         //记录预定得商品
-        rerservationService.insertRerservationGoods(reservationId, EarlyCartController.reservationCart);
+        rerservationService.insertRerservationGoods(reservationId, EarlyCartController.reservationCartMap.get(userId));
         //3、发送到消息队列通知库存变更 放到了insertRerservationGoods里面去处理
 
         return JSONResult.ok(reservationId);

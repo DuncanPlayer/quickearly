@@ -19,6 +19,7 @@ public class ZooKeeperSession {
                     50000,
                     new ZooKeeperWatcher());
 
+            //对于CountDownLatch，当计数为0的时候，下一步的动作实施者是main函数
             connectedSemaphore.await();
 
             System.out.println("ZooKeeper session established.......");

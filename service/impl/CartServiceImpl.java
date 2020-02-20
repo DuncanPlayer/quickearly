@@ -66,6 +66,8 @@ public class CartServiceImpl implements CartService {
                 goods.setSellNum(1);
                 currentCart.add(goods);
             }
+            cartTotal.setCheckedGoodsCount(currentCart.size()-1);
+            cartTotal.setCheckedGoodsAmount(new BigDecimal(PriceTotal.totalPrice(currentCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() - goods.getRetailPrice().floatValue());
             checkOutDTO.setGoodsTotalPrice(new BigDecimal(PriceTotal.totalPrice(currentCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue() - goods.getRetailPrice().floatValue());
         } else {
             for (NideshopGoods good : currentCart) {
@@ -89,30 +91,35 @@ public class CartServiceImpl implements CartService {
         checkOutDTO.setActualPrice(0.5f + cartTotal.getCheckedGoodsAmount());
         //global中的优惠卷
         NideshopCoupon coupon = null;
-        if (couponId != 0 && couponId != null) {
-            coupon = couponMapper.selectByPrimaryKey(new Short(couponId.shortValue()));
-            if (coupon != null) {
-                checkOutDTO.setCheckedCoupon(coupon);
-                checkOutDTO.setActualPrice(checkOutDTO.getActualPrice() - coupon.getTypeMoney().floatValue());
+        if (cartTotal.getCheckedGoodsAmount() > 10.0f) {
+            if (couponId != 0 && couponId != null) {
+                coupon = couponMapper.selectByPrimaryKey(new Short(couponId.shortValue()));
+                if (coupon != null) {
+                    checkOutDTO.setCheckedCoupon(coupon);
+                    checkOutDTO.setActualPrice(checkOutDTO.getActualPrice() - coupon.getTypeMoney().floatValue());
+                }
+            }
+            //couponList
+            if (userId != 0 && userId != null) {
+                NideshopUserCouponExample userCouponExample = new NideshopUserCouponExample();
+                NideshopUserCouponExample.Criteria userCouponCri = userCouponExample.createCriteria();
+                userCouponCri.andUserIdEqualTo(userId);
+                List<NideshopUserCoupon> userCoupons = userCouponMapper.selectByExample(userCouponExample);
+                List<NideshopCoupon> couponList = new ArrayList<>();
+                for (NideshopUserCoupon userCoupon : userCoupons) {
+                    NideshopCoupon coupon1 = couponMapper.selectByPrimaryKey(userCoupon.getCouponId().shortValue());
+                    couponList.add(coupon1);
+                }
+                checkOutDTO.setCouponList(couponList);
             }
         }
-        //couponList
-        if (userId != 0 && userId != null) {
-            NideshopUserCouponExample userCouponExample = new NideshopUserCouponExample();
-            NideshopUserCouponExample.Criteria userCouponCri = userCouponExample.createCriteria();
-            userCouponCri.andUserIdEqualTo(userId);
-            List<NideshopUserCoupon> userCoupons = userCouponMapper.selectByExample(userCouponExample);
-            List<NideshopCoupon> couponList = new ArrayList<>();
-            for (NideshopUserCoupon userCoupon : userCoupons) {
-                NideshopCoupon coupon1 = couponMapper.selectByPrimaryKey(userCoupon.getCouponId().shortValue());
-                couponList.add(coupon1);
-            }
-            checkOutDTO.setCouponList(couponList);
-        }
+
 
         //couponPrice
         if (coupon != null) {
             checkOutDTO.setCouponPrice(coupon.getTypeMoney().floatValue());
+        }else {
+            checkOutDTO.setCouponPrice(0.0f);
         }
         //freightPrice
         checkOutDTO.setFreightPrice(0.5f);
