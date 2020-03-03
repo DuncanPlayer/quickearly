@@ -18,19 +18,19 @@ import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.exceptions.JedisNoReachableClusterNodeException;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @RestController
 @RequestMapping("cart")
 public class EarlyCartController {
-    private static Integer cartGoodsCount = 0;
     private static CartIndexDTO cartIndexDTO = new CartIndexDTO();
     private static CartTotal cartTotal = new CartTotal();
 
-    private static Map<Integer,Integer> userGoodsCountMap = new HashMap<>();
-    private static Map<Integer,List<NideshopGoods>> userCartMap = new HashMap<>();
-    public static Map<Integer,List<NideshopGoods>> currentCartMap = new HashMap<>();
-    public static Map<Integer,List<NideshopGoods>> reservationCartMap = new HashMap<>();
+    private static Map<Integer,Integer> userGoodsCountMap = new ConcurrentHashMap<>();
+    private static Map<Integer,List<NideshopGoods>> userCartMap = new ConcurrentHashMap<>();
+    public static Map<Integer,List<NideshopGoods>> currentCartMap = new ConcurrentHashMap<>();
+    public static Map<Integer,List<NideshopGoods>> reservationCartMap = new ConcurrentHashMap<>();
 
     @Autowired
     private NideshopGoodsMapper goodsMapper;
@@ -47,7 +47,8 @@ public class EarlyCartController {
     @ResponseBody
     @RequestMapping("/goodscount")
     public JSONResult cartGoodsCount(Integer userId) {
-        cartGoodsCount = userGoodsCountMap.get(userId);
+        //TODO 缓存...
+        Integer cartGoodsCount = userGoodsCountMap.get(userId);
         if (null == cartGoodsCount){
             cartGoodsCount = 0;
             userGoodsCountMap.put(userId,cartGoodsCount);
@@ -72,13 +73,14 @@ public class EarlyCartController {
         }catch (JedisNoReachableClusterNodeException e){
             cartListStr = null;
         }
-        if (null == cartListStr) {
+        if (null == cartListStr || null == userId) {
             cartList = new CopyOnWriteArrayList<>();
             cartIndexDTO.setCartTotal(cartTotal);
             cartIndexDTO.getCartTotal().setGoodsCount(0);
             //初始化Map
             userCartMap.put(userId,cartList);
             cartIndexDTO.setCartList(userCartMap.get(userId));
+            userGoodsCountMap.put(userId,0);
         } else {
             if (cartListStr != null){
                 cartList = JSON.parseArray(cartListStr, NideshopGoods.class);
@@ -87,9 +89,9 @@ public class EarlyCartController {
             cartTotal.setGoodsAmount(new BigDecimal(0.00f).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());
             cartTotal.setCheckedGoodsCount(0);
             cartTotal.setCheckedGoodsAmount(0.0f);
-            if (cartGoodsCount > 0) {
-                cartIndexDTO.setGoodsActicity(goodsMapper.getActivity());
-            }
+            //活动商品
+            cartIndexDTO.setGoodsActicity(goodsMapper.getActivity());
+
             cartIndexDTO.setCartTotal(cartTotal);
             cartIndexDTO.setCartList(cartList);
             userCartMap.put(userId,cartList);
@@ -188,8 +190,8 @@ public class EarlyCartController {
         //2 存入缓存
         jedisCluster.set("quickearly-cart-"+userId,JSON.toJSONString(cartList));
 
-        userGoodsCountMap.put(userId,cartGoodsCount);
-        cartGoodsCount = userGoodsCountMap.get(userId) + number;
+        userGoodsCountMap.put(userId,userGoodsCountMap.get(userId));
+        Integer cartGoodsCount = userGoodsCountMap.get(userId) + number;
         userGoodsCountMap.put(userId,cartGoodsCount);
 
         cartTotal.setGoodsCount(cartGoodsCount);
@@ -401,7 +403,7 @@ public class EarlyCartController {
     public JSONResult cartDelete(String productIds,Integer userId) {
         List<NideshopGoods> copyList = userCartMap.get(userId);
         List<NideshopGoods> crCart = currentCartMap.get(userId);
-
+        Integer cartGoodsCount = 0;
         if (productIds.contains(",")) {
             List<String> goodsSn = Arrays.asList(productIds.split(","));
             Iterator<NideshopGoods> it = copyList.iterator();
