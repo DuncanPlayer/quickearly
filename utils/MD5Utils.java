@@ -4,7 +4,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import java.security.MessageDigest;
 
-public class MD5Utils {
+public class MD5Utils{
 
     /**
      * @Description: 对字符串进行md5加密

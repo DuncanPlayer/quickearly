@@ -22,5 +22,7 @@
 - MySQL5.6
 - 微信web开发者工具
 - IntelliJ IDEA2018
+## 小程序端代码地址
+- 尽快完善，加上链接地址
 ## 方便面的微信二维码
 ![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/sby.JPG)
