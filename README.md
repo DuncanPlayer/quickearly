@@ -1,5 +1,5 @@
 ## 简述(趁早早餐)
-关于早餐配送And在线售卖的微信小程序，理想经营范围为人口密集的小区。用户可以提前预定，选择预定时间，也可以立即下单
+趁早(quickearly)B2C早餐外卖微信小程序，理想经营范围为人口密集的小区。用户可以提前预定，选择预定时间，也可以立即下单
 ，查看配送进度,也可以预定好了，到店给出二维码即可取早餐,节约在人多的时候排队的时间
 ## 图片简介
 ![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/early.JPG)![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/detail.JPG)![Image text](https://raw.githubusercontent.com/DuncanPlayer/quickearly/master/imgposition/qrCode.JPG)
