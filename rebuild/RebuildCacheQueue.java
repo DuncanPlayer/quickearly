@@ -1,6 +1,7 @@
 package net.messi.early.rebuild;
 
 import net.messi.early.dto.GoodsDetailDTO;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.concurrent.ArrayBlockingQueue;
 

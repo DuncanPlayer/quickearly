@@ -43,8 +43,8 @@ public class NearShopImpl implements NearShopService {
     public NewGoodsDTO nearshopGoods(Integer shopId, Integer page, Integer size, String order, String sort, Integer categoryId) {
 
         NewGoodsDTO newGoodsDTO = new NewGoodsDTO();
-        //shopid + 20 表示end  limit shopId,end
-        Integer end = shopId + 20;
+        // end 每页商品数
+        Integer end = 20;
         List<NideshopGoods> goodsList = null;
         if (categoryId.equals("0") || categoryId == 0) {
             if (sort.equals("default")) {

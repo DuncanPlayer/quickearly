@@ -85,20 +85,20 @@
 
 
     <select id="findGoodsByLimitByAsc" resultMap="BaseResultMap">
-        select * from nideshop_goods where id between #{start} and #{end} order by retail_price asc
+        select * from nideshop_goods where brand_id = {shopId} order by retail_price asc limit #{end}
     </select>
 
     <select id="findGoodsByLimitByDesc" resultMap="BaseResultMap">
-        select * from nideshop_goods where id between #{start} and #{end} order by retail_price desc
+        select * from nideshop_goods where brand_id = {shopId} order by retail_price desc limit #{end}
     </select>
 
 
     <select id="findGoodsByLimit" resultMap="BaseResultMap">
-        select * from nideshop_goods where id between #{start} and #{end}
+        select * from nideshop_goods where brand_id = #{shopId} limit #{end}
     </select>
 
     <select id="findGoodsByLimitAndCategoryId" resultMap="BaseResultMap">
-        select * from nideshop_goods where id between #{start} and #{end} and category_id=#{categoryId}
+        select * from nideshop_goods where brand_id = #{shopId} and category_id=#{categoryId} limit #{end}
     </select>
 
     <select id="goodsCount" resultType="int">

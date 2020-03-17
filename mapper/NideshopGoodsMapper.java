@@ -39,9 +39,9 @@ public interface NideshopGoodsMapper {
 
     List<NideshopGoods> findGoodsByHotGoods();
 
-    List<NideshopGoods> findGoodsByLimit(@Param("start") Integer start, @Param("end") Integer end);
+    List<NideshopGoods> findGoodsByLimit(@Param("shopId") Integer shopId, @Param("end") Integer end);
 
-    List<NideshopGoods> findGoodsByLimitAndCategoryId(@Param("categoryId") Integer categoryId, @Param("start") Integer start, @Param("end") Integer end);
+    List<NideshopGoods> findGoodsByLimitAndCategoryId(@Param("categoryId") Integer categoryId, @Param("shopId") Integer start, @Param("end") Integer end);
 
     Integer goodsCount();
 
@@ -70,9 +70,9 @@ public interface NideshopGoodsMapper {
     int updateByPrimaryKey(NideshopGoods record);
 
     /******/
-    List<NideshopGoods> findGoodsByLimitByAsc(@Param("start") Integer start, @Param("end") Integer end);
+    List<NideshopGoods> findGoodsByLimitByAsc(@Param("shopId") Integer start, @Param("end") Integer end);
 
-    List<NideshopGoods> findGoodsByLimitByDesc(@Param("start") Integer start, @Param("end") Integer end);
+    List<NideshopGoods> findGoodsByLimitByDesc(@Param("shopId") Integer start, @Param("end") Integer end);
 
     void insertItemCf(@Param("uid") Integer uid, @Param("gid") Integer gid, @Param("val") Integer val);
 

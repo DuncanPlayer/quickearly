@@ -22,10 +22,7 @@ public class TopicController {
     @RequestMapping("/list")
     public JSONResult list(Integer page, Integer size) {
         List<NideshopTopic> topicList = topicService.topics(page, size);
-        if (topicList != null)
-            return JSONResult.ok(topicService.topics(page, size));
-        else
-            return null;
+        return topicList != null?JSONResult.ok(topicService.topics(page, size)):null;
     }
 
     @ResponseBody

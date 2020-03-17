@@ -18,7 +18,6 @@ public class NearShopController {
     @ResponseBody
     @RequestMapping("/shop")
     public JSONResult shop(Integer shopId) {
-        Integer galleryId = shopId + 1000;
         BannerInfo info = nearShopService.findShopInfoByGalleryId(shopId);
         return JSONResult.ok(info);
     }
