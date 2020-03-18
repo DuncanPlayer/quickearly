@@ -48,13 +48,18 @@ public class EarlyCartController {
     @RequestMapping("/goodscount")
     public JSONResult cartGoodsCount(Integer userId) {
         //TODO 缓存...
+        List<NideshopGoods> goodsList = userCartMap.get(userId);
         Integer cartGoodsCount = userGoodsCountMap.get(userId);
         if (null == cartGoodsCount){
             cartGoodsCount = 0;
             userGoodsCountMap.put(userId,cartGoodsCount);
         }
+        if (null == goodsList || goodsList.size() == 0) {
+            userGoodsCountMap.put(userId,0);
+        }
+
         try {
-            cartTotal.setGoodsCount(userGoodsCountMap.get(userId));
+            cartTotal.setGoodsCount(goodsList.size());
         }catch (Exception e){
             cartTotal.setGoodsCount(0);
         }

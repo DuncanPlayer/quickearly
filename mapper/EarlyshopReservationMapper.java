@@ -22,4 +22,6 @@ public interface EarlyshopReservationMapper {
     int updateByExample(@Param("record") EarlyshopReservation record, @Param("example") EarlyshopReservationExample example);
 
     EarlyshopReservation findLastRecord();
+
+    List<EarlyshopReservation> selectReservationOrderListByUserIdDesc(@Param("userId") Integer userId);
 }

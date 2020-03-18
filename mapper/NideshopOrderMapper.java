@@ -30,4 +30,6 @@ public interface NideshopOrderMapper {
     int updateByPrimaryKey(NideshopOrder record);
 
     void changeOroderAndPayStatus(@Param("orderId")Integer orderId);
+
+    List<NideshopOrder> selectOrderByIdDesc(@Param("userId")Integer userId);
 }

@@ -117,6 +117,7 @@ public class QrcodeController {
         EarlyshopQrcode qrcode = qrcodeMapper.selectByExample(qrcodeExample).get(0);
         String mark = "false";
         if (qrcode != null && qrcode.getIsused().equals("1")) {
+
             EarlyshopReservationExample reservationExample = new EarlyshopReservationExample();
             EarlyshopReservationExample.Criteria criteria1 = reservationExample.createCriteria();
             criteria1.andIdEqualTo(reservationId);

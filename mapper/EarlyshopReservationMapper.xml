@@ -30,6 +30,11 @@
         select * from earlyshop_reservation order by id DESC limit 1
     </select>
 
+
+    <select id="selectReservationOrderListByUserIdDesc" resultMap="BaseResultMap">
+        select * from earlyshop_reservation where user_id=#{userId} order by id DESC
+    </select>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">

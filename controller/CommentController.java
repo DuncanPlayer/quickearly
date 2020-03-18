@@ -84,7 +84,7 @@ public class CommentController {
                                   @RequestParam("file") MultipartFile[] files) throws Exception {
         DyncmicDataSourceHolder.setWrite();
         // 文件保存的命名空间
-        String fileSpace = "G:/weixinPlay/userImages";
+        String fileSpace = "/usr/local/userImages";
         //保存到数据库中的相对路径
         String uploadPathDB = "/" + "comment" + "/face";
 

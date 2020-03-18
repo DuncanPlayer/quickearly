@@ -117,10 +117,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<ReservationDTO> reservationList(Integer userId) {
-        EarlyshopReservationExample reservationExample = new EarlyshopReservationExample();
-        EarlyshopReservationExample.Criteria reservationCriteria = reservationExample.createCriteria();
-        reservationCriteria.andUserIdEqualTo(userId);
-        List<EarlyshopReservation> reservationList = reservationMapper.selectByExample(reservationExample);
+        List<EarlyshopReservation> reservationList = reservationMapper.selectReservationOrderListByUserIdDesc(userId);
         List<ReservationDTO> reservationDTOS = new ArrayList<>();
         if (null != reservationList) {
             ReservationDTO reservationDTO = null;
@@ -142,10 +139,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderDTO> orderList(Integer userId) {
-        NideshopOrderExample orderExample = new NideshopOrderExample();
-        NideshopOrderExample.Criteria criteria = orderExample.createCriteria();
-        criteria.andUserIdEqualTo(userId);
-        List<NideshopOrder> orderList = orderMapper.selectByExample(orderExample);
+        List<NideshopOrder> orderList = orderMapper.selectOrderByIdDesc(userId);
         List<OrderDTO> orderDTOS = new ArrayList<>();
         if (orderList != null) {
             OrderDTO orderDTO = null;

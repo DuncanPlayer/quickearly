@@ -55,7 +55,6 @@ public class RedEnvelopeController {
             userCouponMapper.insert(userCoupon);
         }
         Integer couponNum = Integer.parseInt(jedisCluster.get("quickearly-coupon-" + couponId));
-        System.out.println("优惠卷剩余数量："+couponNum);
         if (couponNum > 0){
             couponNum = couponNum - 1;
             jedisCluster.set("quickearly-coupon-"+couponId,couponNum.toString());

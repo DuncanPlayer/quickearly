@@ -36,6 +36,10 @@
   <select id="changeOroderAndPayStatus">
         update nideshop_order set order_status=true and pay_status=true where id=#{orderId}
   </select>
+
+  <select id="selectOrderByIdDesc" resultMap="BaseResultMap">
+        select * from nideshop_order where user_id=#{userId} order by id desc
+  </select>
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
