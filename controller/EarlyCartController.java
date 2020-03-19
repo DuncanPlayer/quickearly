@@ -130,7 +130,7 @@ public class EarlyCartController {
         }catch (Exception e){
             rsvCart = new CopyOnWriteArrayList<>();
         }
-        if (rsvCart.size() > 0) {
+        if (null != rsvCart && rsvCart.size() > 0) {
             for (NideshopGoods nideshopGoods : rsvCart) {
                 if (nideshopGoods.getGoodsSn().equals(goods.getGoodsSn())) {
                     nideshopGoods.setSellNum(nideshopGoods.getSellNum() + number);
@@ -140,7 +140,12 @@ public class EarlyCartController {
             }
         }
         if (!isRepeat) {
-            rsvCart.add(goods);
+            if (null == rsvCart){
+                rsvCart = new ArrayList<>();
+                rsvCart.add(goods);
+            }else {
+                rsvCart.add(goods);
+            }
         }
 
         cartTotal.setCheckedGoodsAmount(new BigDecimal(PriceTotal.totalPrice(rsvCart)).setScale(2, BigDecimal.ROUND_HALF_UP).floatValue());

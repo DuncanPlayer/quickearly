@@ -134,6 +134,7 @@ public class MaterialImpl implements MaterialService {
         EarlyshopReservationExample reservationExample = new EarlyshopReservationExample();
         EarlyshopReservationExample.Criteria reservationCri = reservationExample.createCriteria();
         reservationCri.andIdIsNotNull();
+        reservationCri.andCallbackStatusEqualTo("1");
         int iconReNum = reservationMapper.countByExample(reservationExample);
 
         iconNumDTO.setOrderNum(iconOrderNum);

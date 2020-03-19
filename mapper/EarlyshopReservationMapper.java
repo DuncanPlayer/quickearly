@@ -24,4 +24,8 @@ public interface EarlyshopReservationMapper {
     EarlyshopReservation findLastRecord();
 
     List<EarlyshopReservation> selectReservationOrderListByUserIdDesc(@Param("userId") Integer userId);
+
+    void updateCallBackStatus(@Param("reservationId") Integer reservationId);
+
+    List<EarlyshopReservation> findEvaluationList(@Param("userId") Integer userId);
 }

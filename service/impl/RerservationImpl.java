@@ -32,8 +32,6 @@ public class RerservationImpl implements RerservationService {
 
     @Override
     public Integer aPartOfRerservationInfo(Integer addressId, Integer couponId, Float actualPrice, String content, String endTime) {
-        //从主节点写
-        DyncmicDataSourceHolder.setWrite();
         //找到Address
         NideshopAddress address = addressMapper.selectByPrimaryKey(addressId);
         //找到Coupon
@@ -62,6 +60,8 @@ public class RerservationImpl implements RerservationService {
         if (coupon != null) {
             reservation.setCouponId(new Integer(coupon.getId()));
         }
+        //从主节点写
+        DyncmicDataSourceHolder.setWrite();
         reservationMapper.insert(reservation);
 
         EarlyshopReservation lastReservation = reservationMapper.findLastRecord();
@@ -87,8 +87,9 @@ public class RerservationImpl implements RerservationService {
             try{
                 HashMap<String, String> map = new HashMap<String, String>();
                 map.put("goodsSn", goods.getGoodsSn());
+                map.put("sellNum",goods.getSellNum().toString());
                 //更新库存 发送到消息队列
-                rabbitTemplate.convertAndSend("order_queue_key",map);
+                rabbitTemplate.convertAndSend("OrderExchange","order_queue_key",map);
             }catch (Exception e){
                 e.printStackTrace();
             }

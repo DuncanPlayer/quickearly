@@ -24,4 +24,6 @@ public interface EarlyshopReservationGoodsMapper {
     int updateByExampleWithBLOBs(@Param("record") EarlyshopReservationGoods record, @Param("example") EarlyshopReservationGoodsExample example);
 
     int updateByExample(@Param("record") EarlyshopReservationGoods record, @Param("example") EarlyshopReservationGoodsExample example);
+
+    void updateIsRealToTrue(@Param("reservationId") Integer reservationId,@Param("goodsSn") String goodsSn);
 }

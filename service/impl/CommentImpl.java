@@ -29,6 +29,9 @@ public class CommentImpl implements CommentService {
     @Autowired
     private NideshopOrderMapper orderMapper;
 
+    @Autowired
+    private EarlyshopReservationGoodsMapper reservationGoodsMapper;
+
     @Override
     public List<NideshopComment> commentList(String valueId, Integer typeId, Integer size) {
         NideshopCommentExample commentExample = new NideshopCommentExample();
@@ -139,21 +142,24 @@ public class CommentImpl implements CommentService {
         comment.setUserId(userId);
         commentMapper.insertSelective(comment);
         NideshopComment commentLast = commentMapper.findLastComment();
+        System.out.println("reservationId:"+orderId+" "+"goodsSn:"+goodsSn);
+        //更新 is_real = true
+        reservationGoodsMapper.updateIsRealToTrue(orderId,goodsSn);
 
-        NideshopOrderGoodsExample orderGoodsExample = new NideshopOrderGoodsExample();
-        NideshopOrderGoodsExample.Criteria orderCri = orderGoodsExample.createCriteria();
-        orderCri.andOrderIdEqualTo(orderId);
-        orderCri.andGoodsSnEqualTo(goodsSn);
-        orderGoodsMapper.deleteByExample(orderGoodsExample);
-
-        NideshopOrderGoodsExample orderGoodsExampleTwo = new NideshopOrderGoodsExample();
-        NideshopOrderGoodsExample.Criteria orderCriTwo = orderGoodsExampleTwo.createCriteria();
-        orderCriTwo.andOrderIdEqualTo(orderId);
-        List<NideshopOrderGoods> orderGoods = orderGoodsMapper.selectByExample(orderGoodsExampleTwo);
-        if (orderGoods.size() <= 0 || orderGoods == null) {
-            //评价完了，删除订单----可以日志分析
-            orderMapper.deleteByPrimaryKey(orderId);
-        }
+//        NideshopOrderGoodsExample orderGoodsExample = new NideshopOrderGoodsExample();
+//        NideshopOrderGoodsExample.Criteria orderCri = orderGoodsExample.createCriteria();
+//        orderCri.andOrderIdEqualTo(orderId);
+//        orderCri.andGoodsSnEqualTo(goodsSn);
+//        orderGoodsMapper.deleteByExample(orderGoodsExample);
+//
+//        NideshopOrderGoodsExample orderGoodsExampleTwo = new NideshopOrderGoodsExample();
+//        NideshopOrderGoodsExample.Criteria orderCriTwo = orderGoodsExampleTwo.createCriteria();
+//        orderCriTwo.andOrderIdEqualTo(orderId);
+//        List<NideshopOrderGoods> orderGoods = orderGoodsMapper.selectByExample(orderGoodsExampleTwo);
+//        if (orderGoods.size() <= 0 || orderGoods == null) {
+//            //评价完了，删除订单----可以日志分析
+//            orderMapper.deleteByPrimaryKey(orderId);
+//        }
 
         return commentLast.getId();
     }

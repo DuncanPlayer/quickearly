@@ -9,6 +9,8 @@ import net.messi.early.service.OrderService;
 import net.messi.early.service.RerservationService;
 import net.messi.early.utils.JSONResult;
 import org.apache.commons.collections.IteratorUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -35,11 +37,13 @@ public class OrderController {
     @Autowired
     private JedisCluster jedisCluster;
 
+    private static Logger logger = LoggerFactory.getLogger(OrderController.class);
+
     /**
      * @param addressId
      * @param couponId
      * @param actualPrice
-     * @param content
+     * @param content   用户需求
      * @return
      */
     @ResponseBody
@@ -77,7 +81,7 @@ public class OrderController {
      * @param addressId
      * @param couponId
      * @param actualPrice
-     * @param content     用户的特殊需求
+     * @param content    用户需求
      * @return
      */
     @ResponseBody
@@ -85,9 +89,11 @@ public class OrderController {
     public JSONResult reservationSubmit(Integer userId,Integer addressId, Integer couponId, Float actualPrice, String content, String endTime) {
         //记录部分预定信息
         Integer reservationId = rerservationService.aPartOfRerservationInfo(addressId, couponId, actualPrice, content, endTime);
+        logger.info("预定ID:{}",reservationId);
         //记录预定得商品
         rerservationService.insertRerservationGoods(reservationId, EarlyCartController.reservationCartMap.get(userId));
         //3、发送到消息队列通知库存变更 放到了insertRerservationGoods里面去处理
+        EarlyCartController.reservationCartMap.clear();
 
         return JSONResult.ok(reservationId);
     }
@@ -96,6 +102,12 @@ public class OrderController {
     @RequestMapping("/list")
     public JSONResult orderList(Integer userId) {
         return JSONResult.ok(orderService.orderList(userId));
+    }
+
+    @ResponseBody
+    @RequestMapping("/evaluationList")
+    public JSONResult evaluationList(Integer userId) {
+        return JSONResult.ok(orderService.evaluationList(userId));
     }
 
     @ResponseBody

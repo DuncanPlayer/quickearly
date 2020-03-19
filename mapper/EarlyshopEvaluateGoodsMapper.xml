@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.messi.early.mapper.EarlyshopEvaluateGoodsMapper" >
+  <resultMap id="BaseResultMap" type="net.messi.early.pojo.EarlyshopEvaluateGoods" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="order_id" property="orderId" jdbcType="INTEGER" />
+    <result column="goods_id" property="goodsId" jdbcType="INTEGER" />
+    <result column="goods_name" property="goodsName" jdbcType="VARCHAR" />
+    <result column="goods_sn" property="goodsSn" jdbcType="VARCHAR" />
+    <result column="product_id" property="productId" jdbcType="INTEGER" />
+    <result column="number" property="number" jdbcType="SMALLINT" />
+    <result column="market_price" property="marketPrice" jdbcType="DECIMAL" />
+    <result column="retail_price" property="retailPrice" jdbcType="DECIMAL" />
+    <result column="is_real" property="isReal" jdbcType="BIT" />
+    <result column="goods_specifition_ids" property="goodsSpecifitionIds" jdbcType="VARCHAR" />
+    <result column="list_pic_url" property="listPicUrl" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="net.messi.early.pojo.EarlyshopEvaluateGoods" extends="BaseResultMap" >
+    <result column="goods_specifition_name_value" property="goodsSpecifitionNameValue" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_id, goods_id, goods_name, goods_sn, product_id, number, market_price, retail_price, 
+    is_real, goods_specifition_ids, list_pic_url
+  </sql>
+  <sql id="Blob_Column_List" >
+    goods_specifition_name_value
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from earlyshop_evaluate_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoodsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from earlyshop_evaluate_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoodsExample" >
+    delete from earlyshop_evaluate_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoods" >
+    insert into earlyshop_evaluate_goods (id, order_id, goods_id, 
+      goods_name, goods_sn, product_id, 
+      number, market_price, retail_price, 
+      is_real, goods_specifition_ids, list_pic_url, 
+      goods_specifition_name_value)
+    values (#{id,jdbcType=INTEGER}, #{orderId,jdbcType=INTEGER}, #{goodsId,jdbcType=INTEGER}, 
+      #{goodsName,jdbcType=VARCHAR}, #{goodsSn,jdbcType=VARCHAR}, #{productId,jdbcType=INTEGER}, 
+      #{number,jdbcType=SMALLINT}, #{marketPrice,jdbcType=DECIMAL}, #{retailPrice,jdbcType=DECIMAL}, 
+      #{isReal,jdbcType=BIT}, #{goodsSpecifitionIds,jdbcType=VARCHAR}, #{listPicUrl,jdbcType=VARCHAR}, 
+      #{goodsSpecifitionNameValue,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoods" >
+    insert into earlyshop_evaluate_goods
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsSn != null" >
+        goods_sn,
+      </if>
+      <if test="productId != null" >
+        product_id,
+      </if>
+      <if test="number != null" >
+        number,
+      </if>
+      <if test="marketPrice != null" >
+        market_price,
+      </if>
+      <if test="retailPrice != null" >
+        retail_price,
+      </if>
+      <if test="isReal != null" >
+        is_real,
+      </if>
+      <if test="goodsSpecifitionIds != null" >
+        goods_specifition_ids,
+      </if>
+      <if test="listPicUrl != null" >
+        list_pic_url,
+      </if>
+      <if test="goodsSpecifitionNameValue != null" >
+        goods_specifition_name_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSn != null" >
+        #{goodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="productId != null" >
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="number != null" >
+        #{number,jdbcType=SMALLINT},
+      </if>
+      <if test="marketPrice != null" >
+        #{marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="retailPrice != null" >
+        #{retailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="isReal != null" >
+        #{isReal,jdbcType=BIT},
+      </if>
+      <if test="goodsSpecifitionIds != null" >
+        #{goodsSpecifitionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="listPicUrl != null" >
+        #{listPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSpecifitionNameValue != null" >
+        #{goodsSpecifitionNameValue,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.messi.early.pojo.EarlyshopEvaluateGoodsExample" resultType="java.lang.Integer" >
+    select count(*) from earlyshop_evaluate_goods
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update earlyshop_evaluate_goods
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsId != null" >
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsName != null" >
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsSn != null" >
+        goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productId != null" >
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.number != null" >
+        number = #{record.number,jdbcType=SMALLINT},
+      </if>
+      <if test="record.marketPrice != null" >
+        market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.retailPrice != null" >
+        retail_price = #{record.retailPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.isReal != null" >
+        is_real = #{record.isReal,jdbcType=BIT},
+      </if>
+      <if test="record.goodsSpecifitionIds != null" >
+        goods_specifition_ids = #{record.goodsSpecifitionIds,jdbcType=VARCHAR},
+      </if>
+      <if test="record.listPicUrl != null" >
+        list_pic_url = #{record.listPicUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsSpecifitionNameValue != null" >
+        goods_specifition_name_value = #{record.goodsSpecifitionNameValue,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update earlyshop_evaluate_goods
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=SMALLINT},
+      market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      retail_price = #{record.retailPrice,jdbcType=DECIMAL},
+      is_real = #{record.isReal,jdbcType=BIT},
+      goods_specifition_ids = #{record.goodsSpecifitionIds,jdbcType=VARCHAR},
+      list_pic_url = #{record.listPicUrl,jdbcType=VARCHAR},
+      goods_specifition_name_value = #{record.goodsSpecifitionNameValue,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update earlyshop_evaluate_goods
+    set id = #{record.id,jdbcType=INTEGER},
+      order_id = #{record.orderId,jdbcType=INTEGER},
+      goods_id = #{record.goodsId,jdbcType=INTEGER},
+      goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      goods_sn = #{record.goodsSn,jdbcType=VARCHAR},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      number = #{record.number,jdbcType=SMALLINT},
+      market_price = #{record.marketPrice,jdbcType=DECIMAL},
+      retail_price = #{record.retailPrice,jdbcType=DECIMAL},
+      is_real = #{record.isReal,jdbcType=BIT},
+      goods_specifition_ids = #{record.goodsSpecifitionIds,jdbcType=VARCHAR},
+      list_pic_url = #{record.listPicUrl,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>

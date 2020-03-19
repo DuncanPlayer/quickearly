@@ -38,11 +38,11 @@
     </resultMap>
 
     <select id="lasteInventory" resultType="java.lang.Integer">
-        select goods_number from nideshop_goods where goods_sn=#{goodsId}
+        select goods_number from nideshop_goods where id=#{goodsId}
     </select>
 
     <update id="updateInventory">
-        update nideshop_goods set goods_number=goods_number-#{sellNum} where goods_sn=#{goodsId}
+        update nideshop_goods set goods_number=goods_number-#{sellNum} where goods_sn=#{goodsSn}
     </update>
 
     <select id="getActivity" resultType="net.messi.early.pojo.NideshopGoods">

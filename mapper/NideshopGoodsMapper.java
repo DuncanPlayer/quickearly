@@ -94,8 +94,9 @@ public interface NideshopGoodsMapper {
     NideshopGoods getActivity();
 
     //更新库存
-    void updateInventory(@Param("goodsId") Integer goodsId,@Param("sellNum")Integer sellNum);
+    void updateInventory(@Param("goodsSn") Integer goodsSn,@Param("sellNum")Integer sellNum);
 
     //最新库存
-    Integer lasteInventory(Integer goodsId);
+    Integer lasteInventory(@Param("goodsId") Integer goodsId);
+
 }

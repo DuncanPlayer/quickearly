@@ -16,6 +16,11 @@
     <resultMap id="ResultMapWithBLOBs" type="net.messi.early.pojo.EarlyshopReservationGoods" extends="BaseResultMap">
         <result column="goods_specifition_name_value" property="goodsSpecifitionNameValue" jdbcType="LONGVARCHAR"/>
     </resultMap>
+
+    <update id="updateIsRealToTrue">
+          update earlyshop_reservation_goods set is_real = TRUE where reservation_id = #{reservationId} and goods_sn=#{goodsSn}
+    </update>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">

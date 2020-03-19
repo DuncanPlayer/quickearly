@@ -102,7 +102,7 @@ public class OrderServiceImpl implements OrderService {
                 map.put("goodsSn", goods.getGoodsSn());
                 map.put("sellNum", goods.getSellNum().toString());
                 //更新库存 发送到消息队列
-                rabbitTemplate.convertAndSend("order_queue_key",map);
+                rabbitTemplate.convertAndSend("OrderExchange","order_queue_key",map);
             }catch (Exception e){
                 e.printStackTrace();
             }
@@ -196,5 +196,31 @@ public class OrderServiceImpl implements OrderService {
         return detailDTO;
     }
 
-
+    /**
+     * 评价列表
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<ReservationDTO> evaluationList(Integer userId) {
+        List<EarlyshopReservation> reservationList = reservationMapper.findEvaluationList(userId);
+        List<ReservationDTO> reservationDTOS = new ArrayList<>();
+        if (null != reservationList && reservationList.size() > 0) {
+            ReservationDTO reservationDTO = null;
+            for (EarlyshopReservation reservation : reservationList) {
+                reservationDTO = new ReservationDTO();
+                //预定编号
+                reservation.setReservationSn(NumberUtils.randomNumber());
+                reservationDTO.setReservation(reservation);
+                EarlyshopReservationGoodsExample goodsExample = new EarlyshopReservationGoodsExample();
+                EarlyshopReservationGoodsExample.Criteria criteria = goodsExample.createCriteria();
+                criteria.andReservationIdEqualTo(reservation.getId());
+                criteria.andIsRealEqualTo(false);
+                List<EarlyshopReservationGoods> reservationGoodsList = reservationGoodsMapper.selectByExample(goodsExample);
+                reservationDTO.setReservationGoods(reservationGoodsList);
+                reservationDTOS.add(reservationDTO);
+            }
+        }
+        return reservationDTOS;
+    }
 }

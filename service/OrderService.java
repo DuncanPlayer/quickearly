@@ -18,6 +18,8 @@ public interface OrderService {
 
     List<OrderDTO> orderList(Integer userId);
 
+    List<ReservationDTO> evaluationList(Integer userId);
+
     OrderDetailDTO orderDetail(Integer orderId);
 
     List<ReservationDTO> reservationList(Integer userId);

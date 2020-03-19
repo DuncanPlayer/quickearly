@@ -32,7 +32,16 @@
 
 
     <select id="selectReservationOrderListByUserIdDesc" resultMap="BaseResultMap">
-        select * from earlyshop_reservation where user_id=#{userId} order by id DESC
+        select * from earlyshop_reservation where user_id=#{userId} and callback_status IS NULL order by id DESC
+    </select>
+
+    <update id="updateCallBackStatus">
+          update earlyshop_reservation set callback_status = 1 where id = #{reservationId}
+    </update>
+
+
+    <select id="findEvaluationList" resultMap="BaseResultMap">
+         select * from earlyshop_reservation where user_id=#{userId} and callback_status != FALSE ORDER BY id DESC
     </select>
 
     <sql id="Example_Where_Clause">

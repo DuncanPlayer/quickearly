@@ -4,10 +4,7 @@ import net.messi.early.holder.DyncmicDataSourceHolder;
 import net.messi.early.mapper.EarlyshopQrcodeMapper;
 import net.messi.early.mapper.EarlyshopReservationGoodsMapper;
 import net.messi.early.mapper.EarlyshopReservationMapper;
-import net.messi.early.pojo.EarlyshopQrcode;
-import net.messi.early.pojo.EarlyshopQrcodeExample;
-import net.messi.early.pojo.EarlyshopReservationExample;
-import net.messi.early.pojo.EarlyshopReservationGoodsExample;
+import net.messi.early.pojo.*;
 import net.messi.early.utils.JSONResult;
 import net.messi.early.utils.NumberUtils;
 import net.messi.early.utils.qrCode.QRCodeUtil;
@@ -117,16 +114,17 @@ public class QrcodeController {
         EarlyshopQrcode qrcode = qrcodeMapper.selectByExample(qrcodeExample).get(0);
         String mark = "false";
         if (qrcode != null && qrcode.getIsused().equals("1")) {
+            reservationMapper.updateCallBackStatus(reservationId);
 
-            EarlyshopReservationExample reservationExample = new EarlyshopReservationExample();
-            EarlyshopReservationExample.Criteria criteria1 = reservationExample.createCriteria();
-            criteria1.andIdEqualTo(reservationId);
-            reservationMapper.deleteByExample(reservationExample);
-
-            EarlyshopReservationGoodsExample goodsExample = new EarlyshopReservationGoodsExample();
-            EarlyshopReservationGoodsExample.Criteria goodsCriteria = goodsExample.createCriteria();
-            goodsCriteria.andReservationIdEqualTo(reservationId);
-            reservationGoodsMapper.deleteByExample(goodsExample);
+//            EarlyshopReservationExample reservationExample = new EarlyshopReservationExample();
+//            EarlyshopReservationExample.Criteria criteria1 = reservationExample.createCriteria();
+//            criteria1.andIdEqualTo(reservationId);
+//            reservationMapper.deleteByExample(reservationExample);
+//
+//            EarlyshopReservationGoodsExample goodsExample = new EarlyshopReservationGoodsExample();
+//            EarlyshopReservationGoodsExample.Criteria goodsCriteria = goodsExample.createCriteria();
+//            goodsCriteria.andReservationIdEqualTo(reservationId);
+//            reservationGoodsMapper.deleteByExample(goodsExample);
             mark = "true";
         }
         return JSONResult.ok(mark);
