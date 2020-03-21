@@ -52,7 +52,7 @@ public class OrderServiceImpl implements OrderService {
         NideshopCoupon coupon = couponMapper.selectByPrimaryKey(couponId.shortValue());
         NideshopOrder order = new NideshopOrder();
         order.setAddTime(Long.toString(System.currentTimeMillis()));
-        //TODO 订单oderSn 加锁性能下降
+        //TODO 订单编号
         String oderSn = NumberUtils.randomNumber();
         if (address != null) {
             order.setOrderSn(oderSn);
@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
         if (coupon != null) {
             order.setCouponId(new Integer(coupon.getId()));
         }
-        DyncmicDataSourceHolder.setWrite();
+        DyncmicDataSourceHolder.setWrite();  //master
         orderMapper.insert(order);
         //根据orderSn找到刚才插入那条记录
         NideshopOrderExample orderExample = new NideshopOrderExample();

@@ -37,6 +37,9 @@ public class OrderController {
     @Autowired
     private JedisCluster jedisCluster;
 
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
     private static Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     /**
@@ -51,6 +54,8 @@ public class OrderController {
     public JSONResult orderSubmit(Integer addressId, Integer couponId, Float actualPrice, String content,String userId) {
         //1、记录订单得部分信息
         Integer orderId = orderService.aPartOfOrderInfo(addressId, couponId, actualPrice, content);
+        // 下订单通知
+        rabbitTemplate.convertAndSend("OrderNotice","notice_queue_order",orderId);
         //2、需要记录所需购买物品得详细信息
         orderService.orderDetailInfo(orderId, EarlyCartController.currentCartMap.get(Integer.parseInt(userId)));
         //3、清除已下单的购物车
