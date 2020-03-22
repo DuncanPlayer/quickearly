@@ -32,8 +32,8 @@ public class IndexController {
 //        indexDTO.setBanner(adService.listAd());
         indexDTO.setChannel(channelService.channelList());
         indexDTO.setBrandList(brandService.brandList());
-        indexDTO.setNewGoodsList(goodsService.newGoods());
-        indexDTO.setHotGoodsList(goodsService.hotGoods());
+//        indexDTO.setNewGoodsList(goodsService.newGoods());
+//        indexDTO.setHotGoodsList(goodsService.hotGoods());
         indexDTO.setTopicList(topicService.topics());
         indexDTO.setCategoryList(goodsService.floorGoods());
         return JSONResult.ok(indexDTO);

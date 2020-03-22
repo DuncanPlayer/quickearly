@@ -1,5 +1,6 @@
 package net.messi.early.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import net.messi.early.constant.FilterCategory;
 import net.messi.early.constant.IPAddress;
 import net.messi.early.constant.SpecificationConstant;
@@ -15,8 +16,6 @@ import java.util.*;
 
 @Service("goodsService")
 public class GoodsImpl implements GoodsService {
-
-
     @Autowired
     private NideshopGoodsMapper goodsMapper;
 
@@ -53,8 +52,6 @@ public class GoodsImpl implements GoodsService {
     @Autowired
     private NideshopCommentPictureMapper pictureMapper;
 
-    @Autowired
-    private NideshopCartMapper cartMapper;
 
 
     @Override

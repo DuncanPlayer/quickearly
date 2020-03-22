@@ -10,7 +10,7 @@ public interface CacheService {
      *
      * @return
      */
-    public GoodsDetailDTO saveLocalCache(GoodsDetailDTO goodsDetailDTO);
+    GoodsDetailDTO saveLocalCache(GoodsDetailDTO goodsDetailDTO);
 
 
     /**
@@ -18,13 +18,13 @@ public interface CacheService {
      *
      * @return
      */
-    public GoodsDetailDTO getLocalCache(Integer goodsSn);
+    GoodsDetailDTO getLocalCache(Integer goodsSn);
 
-    public GoodsDetailDTO saveProductInfo2LocalCache(GoodsDetailDTO goodsDetailDTO);
+    GoodsDetailDTO saveProductInfo2LocalCache(GoodsDetailDTO goodsDetailDTO);
 
-    public void saveProductInfo2RedisCache(GoodsDetailDTO goodsDetailDTO);
+    void saveProductInfo2RedisCache(GoodsDetailDTO goodsDetailDTO);
 
-    public GoodsDetailDTO getProductInfo2LocalCache(Integer goodsSn);
+    GoodsDetailDTO getProductInfo2LocalCache(Integer goodsSn);
 
     GoodsDetailDTO getProductInfoFromReidsCache(Integer goodsSn);
 

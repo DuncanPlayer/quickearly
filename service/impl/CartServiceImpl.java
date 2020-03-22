@@ -1,10 +1,15 @@
 package net.messi.early.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import net.messi.early.VO.CartTotal;
+import net.messi.early.VO.CouponVo;
+import net.messi.early.VO.LimitCouponVo;
+import net.messi.early.constant.IPAddress;
 import net.messi.early.dto.CheckOutDTO;
 import net.messi.early.mapper.*;
 import net.messi.early.pojo.*;
 import net.messi.early.service.CartService;
+import net.messi.early.storm.http.HttpClientUtils;
 import net.messi.early.utils.PriceTotal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,9 +59,15 @@ public class CartServiceImpl implements CartService {
             checkOutDTO.setCouponPrice(0);
             checkOutDTO.setCouponList(null);
         }
-        //当购物车中商品大于十元，增加赠品到currentCart
-        NideshopGoods goods = goodsMapper.getGift();
-        if (cartTotal.getCheckedGoodsAmount() > 10.0f) {
+        //NideshopGoods goods = goodsMapper.getGift();
+        NideshopGoods goods = null;
+        //超过多少赠送促销商品  ---》config
+        try {
+            goods = JSON.parseObject(new String(HttpClientUtils.sendGetRequest(IPAddress.JSONCONFIG+"json/salegoods.json").getBytes(),"utf-8"),NideshopGoods.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        if (null != goods && cartTotal.getCheckedGoodsAmount() > 10.0f) {
             //去重
             List<String> goodsSn = new ArrayList<>();
             for (int i = 0; i < currentCart.size(); i++) {
@@ -89,17 +100,27 @@ public class CartServiceImpl implements CartService {
         }
         //actualPrice
         checkOutDTO.setActualPrice(0.5f + cartTotal.getCheckedGoodsAmount());
-        //global中的优惠卷
-        NideshopCoupon coupon = null;
-        if (cartTotal.getCheckedGoodsAmount() > 10.0f) {
-            if (couponId != 0 && couponId != null) {
-                coupon = couponMapper.selectByPrimaryKey(new Short(couponId.shortValue()));
-                if (coupon != null) {
-                    checkOutDTO.setCheckedCoupon(coupon);
-                    checkOutDTO.setActualPrice(checkOutDTO.getActualPrice() - coupon.getTypeMoney().floatValue());
+        CouponVo couponVo = null;
+        try {
+            couponVo = JSON.parseObject(new String(HttpClientUtils.sendGetRequest(IPAddress.JSONCONFIG+"json/coupon.json").getBytes(),"utf-8"), CouponVo.class);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        //优惠卷 JSON配置  TODO get(0)
+        if (cartTotal.getCheckedGoodsAmount() >= couponVo.getData().get(0).getBeyondMoney().floatValue()) {
+            if (null != couponVo && couponId != 0 && couponId != null) {
+                for (LimitCouponVo limitCouponVo:couponVo.getData()){
+                    if (limitCouponVo.getCouponId().equals(couponId)){
+                        //前端沒用checkedcoupon
+                        checkOutDTO.setCheckedCoupon(null);
+                        checkOutDTO.setCouponPrice(limitCouponVo.getCouponMoney().floatValue());
+                        checkOutDTO.setActualPrice(checkOutDTO.getActualPrice() - limitCouponVo.getCouponMoney().floatValue());
+                        break;
+                    }
                 }
             }
             //couponList
+            //TODO sql
             if (userId != 0 && userId != null) {
                 NideshopUserCouponExample userCouponExample = new NideshopUserCouponExample();
                 NideshopUserCouponExample.Criteria userCouponCri = userCouponExample.createCriteria();
@@ -114,13 +135,6 @@ public class CartServiceImpl implements CartService {
             }
         }
 
-
-        //couponPrice
-        if (coupon != null) {
-            checkOutDTO.setCouponPrice(coupon.getTypeMoney().floatValue());
-        }else {
-            checkOutDTO.setCouponPrice(0.0f);
-        }
         //freightPrice
         checkOutDTO.setFreightPrice(0.5f);
 
