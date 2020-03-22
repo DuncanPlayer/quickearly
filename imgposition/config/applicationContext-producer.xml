@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	   xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+   ">
+
+	<!-- 配置连接工厂 -->
+	<rabbit:connection-factory id="connectionFactory"
+		host="192.168.43.188" port="5672" username="guest" password="guest"/>
+
+	<!-- 定义mq管理 -->
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!-- 声明队列 -->
+	<rabbit:queue name="order_queue" auto-declare="true" durable="true" />
+	<rabbit:queue name="cart_queue" auto-declare="true" durable="true" />
+
+	<!-- 定义交换机绑定队列（路由模式） 购物车-->
+	<rabbit:direct-exchange name="CartExchange"
+							id="CExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="cart_queue" key="cart_queue_key" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<!-- 定义交换机绑定队列（路由模式） 订单-->
+	<rabbit:direct-exchange name="OrderExchange"
+		id="IExchange">
+		<rabbit:bindings>
+			<rabbit:binding queue="order_queue" key="order_queue_key" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<!-- 消息对象json转换类 -->
+	<bean id="jsonMessageConverter"
+		class="org.springframework.amqp.support.converter.Jackson2JsonMessageConverter" />
+ 
+	<!-- 定义模板-->
+	<rabbit:template id="rabbitTemplate"
+		connection-factory="connectionFactory" exchange="OrderExchange"
+		message-converter="jsonMessageConverter"/>
+ 
+</beans>

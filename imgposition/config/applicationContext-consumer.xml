@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	   xsi:schemaLocation="http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.5.xsd
+	   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+	" >
+	<!-- 配置RabbitMQ连接 -->
+	<!-- channel-cache-size，channel的缓存数量，默认值为25 -->
+	<!-- cache-mode，缓存连接模式，默认值为CHANNEL(单个connection连接，连接之后关闭，自动销毁) -->
+	<rabbit:connection-factory id="connectionFactory"
+		host="192.168.43.188" port="5672" username="guest" password="guest"/>
+
+	<!-- 定义mq管理 -->
+	<rabbit:admin connection-factory="connectionFactory" />
+
+	<!--
+    定义消息队列
+    durable:是否持久化，如果想在RabbitMQ退出或崩溃的时候，不失去queue和消息，需要同时标志队列(queue)
+    和交换机(exchange)持久化，即rabbit:queue标签和rabbit:direct-exchange中的durable=true,而消息(message)
+    默认是持久化的，可以看类org.springframework.amqp.core.MessageProperties中的属性
+    public static final MessageDeliveryMode DEFAULT_DELIVERY_MODE = MessageDeliveryMode.PERSISTENT;
+    auto_delete: 当所有消费客户端连接断开后，是否自动删除队列
+    exclusive: 仅创建者可以使用的私有队列，断开后自动删除；
+	-->
+	<rabbit:queue name="order_queue" auto-declare="true" durable="true" />
+	<rabbit:queue name="cart_queue" auto-declare="true" durable="true" />
+
+	<!-- 定义消费者 -->
+	<bean name="inventoryUpdate" class="net.messi.early.consumer.InventoryUpdateConsumer" />
+
+	<bean name="saveCartConsumer" class="net.messi.early.consumer.SaveCartConsumer" />
+
+	<!-- 队列监听-->
+	<!-- acknowledge：auto自动确认(默认), manual手动确认  -->
+	<!-- concurrency：并发数量 ，设置的是对每个listener在初始化的时候设置的并发消费者的个数-->
+	<!-- prefetch 是每次从一次性从broker里面取的待消费的消息的个数 -->
+	<rabbit:listener-container
+		connection-factory="connectionFactory" concurrency="5" prefetch="1">
+		<rabbit:listener ref="inventoryUpdate" queues="order_queue" />
+		<rabbit:listener ref="saveCartConsumer" queues="cart_queue" />
+	</rabbit:listener-container>
+</beans>

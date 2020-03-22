@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cache="http://www.springframework.org/schema/cache" xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.2.xsd">
+
+    <!-- 数据库连接池 -->
+    <!-- 加载配置文件 -->
+    <!--
+        由db.properties改为*.properties, 这样也会加载其他的属性文件 可以使用 @Value
+        由于父子容器关系，service层（父）的属性文件在springmvc层（子）是读取不到的，子只能读取对象，属性是读取不到的
+     -->
+    <context:property-placeholder location="classpath:resource/*.properties"/>
+    <!-- 启用缓存 -->
+    <cache:annotation-driven cache-manager="cacheManagerBean"/>
+    <!--声明一个缓存管理器（EhCacheCacheManager） 这里的实现代码是通过传入EhCache的CacheManager实例实现的 -->
+    <bean id="cacheManagerBean" class="org.springframework.cache.ehcache.EhCacheCacheManager"
+          p:cache-manager-ref="ehcache"/>
+    <!--这里并不是EhCacheManagerFactoryBean的实例，而是EhCache中CacheManager的一个实例  -->
+    <!--因为Spring和EhCache都定义了CacheManager类型  -->
+    <bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+        <property name="configLocation" value="classpath:resource/ehcache.xml"/>
+        <property name="shared" value="true"/>
+    </bean>
+
+    <bean id="masterDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <!-- 配置连接池属性 -->
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.master.url}"/>
+        <property name="username" value="${jdbc.master.username}"/>
+        <property name="password" value="${jdbc.master.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <!--从数据源-->
+    <bean id="slaveDataSource" class="com.alibaba.druid.pool.DruidDataSource"
+          destroy-method="close">
+        <!-- 配置连接池属性 -->
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.slave.url}"/>
+        <property name="username" value="${jdbc.slave.username}"/>
+        <property name="password" value="${jdbc.slave.password}"/>
+        <property name="maxActive" value="10"/>
+        <property name="minIdle" value="5"/>
+    </bean>
+    <!--配置动态数据源-->
+    <bean id="dynamicDataSource" class="net.messi.early.holder.DynamicDataSource">
+        <property name="targetDataSources">
+            <map>
+                <entry key="master" value-ref="masterDataSource"/>
+                <entry key="slave" value-ref="slaveDataSource"/>
+            </map>
+        </property>
+        <!-- 配置默认使用的数据源为读库 -->
+        <property name="defaultTargetDataSource" ref="slaveDataSource"/>
+    </bean>
+    <!--由于在运行时决定使用哪个数据源，所以使用懒加载-->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy">
+        <property name="targetDataSource">
+            <ref bean="dynamicDataSource"/>
+        </property>
+    </bean>
+
+    <!-- 配置sqlsessionFactory -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="configLocation" value="classpath:mybatis/SqlMapConfig.xml"></property>
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- 配置扫描包，加载mapper代理对象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="net.messi.early.mapper"></property>
+    </bean>
+
+</beans>
+        <!-- 数据库连接池 -->
+        <!--<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"-->
+        <!--destroy-method="close">-->
+        <!--<property name="url" value="${jdbc.url}" />-->
+        <!--<property name="username" value="${jdbc.username}" />-->
+        <!--<property name="password" value="${jdbc.password}" />-->
+        <!--<property name="driverClassName" value="${jdbc.driver}" />-->
+        <!--&lt;!&ndash; 最大并发连接数 &ndash;&gt;-->
+        <!--<property name="maxActive" value="30" />-->
+        <!--&lt;!&ndash; 最小空闲连接数 &ndash;&gt;-->
+        <!--<property name="minIdle" value="5" />-->
+        <!--&lt;!&ndash; 用于显示数据源监控中的sql语句监控 &ndash;&gt;-->
+        <!--<property name="filters" value="stat" />-->
+        <!--</bean>-->
+
+        <!--数据源-->
+        <!--<bean id="abstractDataSource" abstract="true" class="com.mchange.v2.c3p0.ComboPooledDataSource"-->
+        <!--destroy-method="close">-->
+        <!--&lt;!&ndash; c3p0连接池的私有属性 &ndash;&gt;-->
+        <!--<property name="maxPoolSize" value="30"/>-->
+        <!--<property name="minPoolSize" value="10"/>-->
+        <!--&lt;!&ndash; 关闭连接后不自动commit &ndash;&gt;-->
+        <!--<property name="autoCommitOnClose" value="false"/>-->
+        <!--&lt;!&ndash; 获取连接超时时间 &ndash;&gt;-->
+        <!--<property name="checkoutTimeout" value="10000"/>-->
+        <!--&lt;!&ndash; 当获取连接失败重试次数 &ndash;&gt;-->
+        <!--<property name="acquireRetryAttempts" value="2"/>-->
+        <!--</bean>-->
+        <!--主数据源-->
