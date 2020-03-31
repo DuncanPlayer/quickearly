@@ -14,7 +14,7 @@
 - 使用Zookeeper作为分布式锁,保证库存扣减的一致性
 - 配置两个节点的MySQL并开启binlog日志文件进行读写分离,
 - Spring+Spring MVC+Mybatis框架整合开发
-- 采用基于物品的协同过滤算法为用户推荐
+- 根据用户的点击率和购买记录为用户推荐
 ## 使用环境
 - Centos7
 - JDK8
