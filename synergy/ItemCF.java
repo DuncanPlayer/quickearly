@@ -21,7 +21,7 @@ public class ItemCF {
         dataSource.setUrl(IPAddress.ITEMCFIP);
         dataSource.setUser("repl");
         dataSource.setPassword("repl");
-        dataSource.setServerName("localhost");
+        dataSource.setServerName("192.168.43.12");
         dataSource.setDatabaseName("earlydetail");
     }
 
