@@ -26,5 +26,10 @@
 ## 小程序端代码地址
 - https://github.com/DuncanPlayer/quickearly--applet
 - 备注:聊天和早餐检索已经抽取成新的项目
+## 后台管理程序
+- https://github.com/DuncanPlayer/earlyadmin
+![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/img/log.JPG)
+## 聊天和搜索
+
 ## 方便面的微信二维码
 ![Image text](https://github.com/DuncanPlayer/quickearly/blob/master/imgposition/img/sby.JPG)
